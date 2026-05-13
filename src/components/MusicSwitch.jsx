@@ -1,38 +1,65 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
+import PropTypes from "prop-types";
 import { soundoff, soundon } from "../assets/icons";
 
 // Import audio tracks
 import sakura from "../assets/sakura.mp3";
-import wayHome from "../assets/Way-Home(chosic.com).mp3";
 import panchayat from "../assets/panchayat-title-anurag-saikia-60314.mp3";
 
 const tracks = [
   { id: 1, name: "Sakura", file: sakura },
-  { id: 2, name: "Way Home", file: wayHome },
-  { id: 3, name: "Panchayat", file: panchayat },
+  { id: 2, name: "Panchayat", file: panchayat },
 ];
 
 const MusicSwitch = ({ isPlaying, onToggle }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [showTrackList, setShowTrackList] = useState(false);
   const [currentTrack, setCurrentTrack] = useState(0);
-  const [audio] = useState(new Audio(tracks[0].file));
+  const [audio] = useState(() => {
+    const audioInstance = new Audio();
+    audioInstance.preload = 'metadata'; // Only load metadata initially
+    return audioInstance;
+  });
+  const [isLoading, setIsLoading] = useState(false);
   const timeoutRef = useRef(null);
 
   useEffect(() => {
     audio.loop = true;
     audio.volume = 0.4;
 
+    // Add error handling
+    const handleError = (e) => {
+      console.error('Audio loading error:', e);
+      setIsLoading(false);
+    };
+
+    const handleCanPlay = () => {
+      setIsLoading(false);
+    };
+
+    audio.addEventListener('error', handleError);
+    audio.addEventListener('canplay', handleCanPlay);
+
+    // Load the first track
+    if (!audio.src) {
+      audio.src = tracks[0].file;
+    }
+
     if (isPlaying) {
-      audio.play();
+      setIsLoading(true);
+      audio.play().catch(err => {
+        console.error('Playback failed:', err);
+        setIsLoading(false);
+      });
     } else {
       audio.pause();
     }
 
     return () => {
+      audio.removeEventListener('error', handleError);
+      audio.removeEventListener('canplay', handleCanPlay);
       audio.pause();
-      audio.currentTime = 0;
     };
   }, [isPlaying, audio]);
 
@@ -43,7 +70,7 @@ const MusicSwitch = ({ isPlaying, onToggle }) => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
-      
+
       // Set new timeout to close menu after 3 seconds
       timeoutRef.current = setTimeout(() => {
         setShowTrackList(false);
@@ -123,20 +150,25 @@ const MusicSwitch = ({ isPlaying, onToggle }) => {
             onClick={onToggle}
             className="relative p-4 bg-white/10 dark:bg-black/20 backdrop-blur-[2px] rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
             whileTap={{ scale: 0.95 }}
+            disabled={isLoading}
           >
-            <motion.img
-              src={isPlaying ? soundon : soundoff}
-              alt="music control"
-              className="w-8 h-8"
-              animate={{
-                rotate: isPlaying ? [0, 360] : 0,
-              }}
-              transition={{
-                duration: 2,
-                repeat: isPlaying ? Infinity : 0,
-                ease: "linear",
-              }}
-            />
+            {isLoading ? (
+              <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            ) : (
+              <motion.img
+                src={isPlaying ? soundon : soundoff}
+                alt="music control"
+                className="w-8 h-8"
+                animate={{
+                  rotate: isPlaying ? [0, 360] : 0,
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: isPlaying ? Infinity : 0,
+                  ease: "linear",
+                }}
+              />
+            )}
           </motion.button>
         </div>
 
@@ -155,9 +187,8 @@ const MusicSwitch = ({ isPlaying, onToggle }) => {
                 <motion.button
                   key={track.id}
                   onClick={() => handleTrackChange(index)}
-                  className={`w-full text-left px-4 py-2 rounded-md text-sm text-white hover:bg-white/10 dark:hover:bg-white/5 transition-colors ${
-                    currentTrack === index ? "bg-white/20 dark:bg-white/10" : ""
-                  }`}
+                  className={`w-full text-left px-4 py-2 rounded-md text-sm text-white hover:bg-white/10 dark:hover:bg-white/5 transition-colors ${currentTrack === index ? "bg-white/20 dark:bg-white/10" : ""
+                    }`}
                   whileHover={{ x: 5 }}
                 >
                   {track.name}
@@ -178,6 +209,11 @@ const MusicSwitch = ({ isPlaying, onToggle }) => {
       </motion.div>
     </motion.div>
   );
+};
+
+MusicSwitch.propTypes = {
+  isPlaying: PropTypes.bool.isRequired,
+  onToggle: PropTypes.func.isRequired,
 };
 
 export default MusicSwitch; 
