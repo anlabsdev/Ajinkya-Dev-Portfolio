@@ -21,20 +21,6 @@ export default defineConfig({
     chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
-        // Manual chunk splitting for better caching
-        manualChunks: {
-          // Vendor chunks
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'three-vendor': ['three', '@react-three/fiber', '@react-three/drei'],
-          'animation-vendor': ['framer-motion', '@react-spring/three'],
-          // Component chunks
-          'models': [
-            './src/models/Island.jsx',
-            './src/models/Bird.jsx',
-            './src/models/Plane.jsx',
-            './src/models/Sky.jsx'
-          ]
-        },
         // Optimize asset file names
         assetFileNames: (assetInfo) => {
           const info = assetInfo.name.split('.')
@@ -86,4 +72,3 @@ export default defineConfig({
     }
   }
 })
-
