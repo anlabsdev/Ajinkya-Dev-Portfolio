@@ -2,6 +2,7 @@ import { FaGithub, FaLinkedin, FaMedium, FaWhatsapp } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { SiLeetcode } from "react-icons/si";
 import ProfileCard from "../components/profilecard/ProfileCard/ProfileCard";
+import ajinkyaAvatar from "../components/profilecard/ProfileCard/Ajinkya.jpg";
 
 const socialLinks = [
   {
@@ -90,7 +91,7 @@ const Connect = () => {
         <div className='flex justify-center lg:sticky lg:top-28'>
           <div className='w-full max-w-[360px]'>
             <ProfileCard
-              avatarUrl='/src/components/profilecard/ProfileCard/Ajinkya.jpg'
+              avatarUrl={ajinkyaAvatar}
               name='Ajinkya A. Narke'
               title='Software Engineer and AI Software Builder'
               handle='ajinkya.narke'
