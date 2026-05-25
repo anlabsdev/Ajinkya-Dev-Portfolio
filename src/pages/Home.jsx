@@ -2,21 +2,10 @@ import { Canvas } from "@react-three/fiber";
 import { Suspense, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useTheme } from "../context/ThemeContext";
+import { canCreateWebGLContext } from "../utils/webgl";
 
 import { HomeInfo, Loader, MusicSwitch } from "../components";
 import { Bird, Island, Plane, Sky } from "../models";
-
-const canCreateWebGLContext = () => {
-  try {
-    const canvas = document.createElement("canvas");
-    return Boolean(
-      window.WebGLRenderingContext &&
-        (canvas.getContext("webgl") || canvas.getContext("experimental-webgl"))
-    );
-  } catch {
-    return false;
-  }
-};
 
 const SceneFallback = () => (
   <div className='w-full h-screen bg-gradient-to-br from-sky-200 via-blue-100 to-white dark:from-slate-950 dark:via-slate-900 dark:to-slate-800' />

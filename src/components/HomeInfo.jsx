@@ -1,19 +1,17 @@
 import { Link } from "react-router-dom";
 import { arrow } from "../assets/icons";
-import HandAnimation from "./HandAnimation";
-import { CTA } from "../components";
 
 const HomeInfo = ({ currentStage }) => {
-  if (currentStage === 1)
+  if (currentStage === 1) {
     return (
       <h1 className='sm:text-xl sm:leading-snug text-center neo-brutalism-blue py-4 px-8 text-white mx-5'>
         Hi, I'm
-        <span className='font-semibold mx-2 text-white'>AJinkya</span>
-        👋
+        <span className='font-semibold mx-2 text-white'>Ajinkya</span>
         <br />
-        A Software Developer from India
+        Software Engineer and AI Software Builder from India
       </h1>
     );
+  }
 
   if (currentStage === 2) {
     return (
@@ -82,7 +80,7 @@ const HomeInfo = ({ currentStage }) => {
       <div className='info-box flex flex-col items-center justify-between min-h-[140px] py-4'>
         <div className='text-container mb-4'>
           <p className='font-medium text-center sm:text-xl'>
-            Let's connect and build something amazing together! <br/> Join my professional network
+            Let's connect and build something amazing together! <br /> Join my professional network
           </p>
         </div>
 

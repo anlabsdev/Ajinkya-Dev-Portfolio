@@ -37,9 +37,10 @@ const Navbar = () => {
   }, [isOpen]);
 
   const navLinks = [
-    { to: '/about', label: 'About' },
     { to: '/projects', label: 'Projects' },
+    { to: '/studio', label: 'Studio' },
     { to: '/certification', label: 'Certifications' },
+    { to: '/about', label: 'About' },
     { to: '/chatbot', label: 'AI Chat Agent' },
     { to: '/connect', label: 'Connect' },
     { to: '/contact', label: 'Contact' }
@@ -77,25 +78,6 @@ const Navbar = () => {
         duration: 0.2,
       },
     },
-  };
-
-  const menuItemVariants = {
-    closed: {
-      opacity: 0,
-      x: 20,
-      transition: {
-        duration: 0.2
-      }
-    },
-    open: (i) => ({
-      opacity: 1,
-      x: 0,
-      transition: {
-        delay: i * 0.05,
-        duration: 0.3,
-        ease: "easeOut"
-      }
-    })
   };
 
   return (

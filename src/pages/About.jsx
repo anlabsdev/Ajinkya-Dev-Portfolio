@@ -8,343 +8,274 @@ import { experiences, skills } from "../constants";
 
 import "react-vertical-timeline-component/style.min.css";
 
+const toolGroups = [
+  {
+    title: "Development",
+    items: ["VS Code / Cursor", "Git / GitHub", "Postman", "Supabase"],
+    accent: "bg-blue-500",
+  },
+  {
+    title: "AI Builder Stack",
+    items: ["n8n", "LangGraph", "Hugging Face", "OpenAI / Claude / Mistral"],
+    accent: "bg-emerald-500",
+  },
+  {
+    title: "Design & Planning",
+    items: ["Figma", "Adobe Photoshop", "Canva", "Notion / Trello"],
+    accent: "bg-indigo-500",
+  },
+];
+
+const aiFocus = [
+  {
+    title: "Personalised RAG",
+    description: "Knowledge-grounded assistants using private data, embeddings, and context-aware retrieval.",
+  },
+  {
+    title: "Voice Agents",
+    description: "Conversational workflows for calls, lead capture, appointment flows, and customer support.",
+  },
+  {
+    title: "AI Software Builder",
+    description: "Fast prototypes and production-ready apps that combine software engineering with modern AI tools.",
+  },
+  {
+    title: "ANlabs Product Studio",
+    description: "A focused studio for AI automation, SaaS, Android apps, product pages, and launch-ready experiments.",
+  },
+  {
+    title: "Social Media AI Systems",
+    description: "Content planning, generation, scheduling support, and repeatable automation pipelines.",
+  },
+];
+
+const education = [
+  {
+    title: "Bachelor of Engineering in Computer Science",
+    school: "KIT College of Engineering, Kolhapur",
+    date: "2012 - 2017",
+    accent: "#3B82F6",
+    points: [
+      "Focused on software development, databases, and web technologies.",
+      "Graduated with First Class Distinction.",
+      "Built a strong foundation in practical engineering and problem solving.",
+    ],
+  },
+  {
+    title: "Higher Secondary Education (HSC)",
+    school: "Maharashtra State Board",
+    date: "2011 - 2012",
+    accent: "#8B5CF6",
+    points: [
+      "Specialized in Physics, Chemistry, and Mathematics.",
+      "Strengthened core analytical and computing fundamentals.",
+    ],
+  },
+];
+
+const timelineContentStyle = {
+  background: "rgba(255, 255, 255, 0.94)",
+  border: "1px solid rgba(148, 163, 184, 0.24)",
+  borderBottom: "6px solid",
+  borderRadius: "8px",
+  boxShadow: "0 18px 45px rgba(15, 23, 42, 0.08)",
+};
+
 const About = () => {
   return (
-    <section className='relative flex flex-col max-container bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 min-h-screen p-8 transition-colors duration-300'>
-      <div className='glassmorphism-card p-8 rounded-2xl shadow-xl backdrop-blur-sm bg-white/80 dark:bg-slate-800/80 border border-blue-100/20 dark:border-slate-700/20'>
-        <h1 className='head-text text-gradient bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent'>
+    <section className='max-container bg-white dark:bg-slate-950'>
+      <div className='max-w-3xl'>
+        <p className='font-poppins text-sm font-semibold uppercase tracking-[0.18em] text-primary dark:text-primary-dark'>
+          About
+        </p>
+        <h1 className='head-text mt-3'>
           Hello, I'm{" "}
           <span className='blue-gradient_text font-semibold drop-shadow'>
-            {" "}
             Ajinkya Narke
-          </span>{" "}
-          👋
+          </span>
         </h1>
 
-        <div className='mt-5 flex flex-col gap-3 text-slate-600 dark:text-slate-300'>
-          <p className='text-lg'>
-            Software Engineer based in India, specializing in technical education through hands-on learning and building applications. Currently open for full-time opportunities and exciting projects that challenge my skills and allow me to create impactful solutions.
-          </p>
-        </div>
+        <p className='mt-5 text-lg leading-8 text-slate-600 dark:text-slate-300'>
+          Software Engineer and AI Software Builder based in India, specializing
+          in technical education through hands-on learning and building
+          applications. I also build ANlabs, an AI automation, SaaS, and Android
+          product studio where I turn practical ideas into launched digital
+          products. Currently open for full-time opportunities and exciting
+          projects that challenge my skills and allow me to create impactful
+          solutions.
+        </p>
       </div>
 
-      <div className='glassmorphism-card p-8 rounded-2xl shadow-xl backdrop-blur-sm bg-white/80 dark:bg-slate-800/80 border border-blue-100/20 dark:border-slate-700/20 mt-8'>
-        <h3 className='subhead-text text-gradient bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent'>My Skills</h3>
+      <section className='mt-16 border-t border-slate-200 pt-10 dark:border-slate-800'>
+        <div className='grid gap-6 md:grid-cols-[1.1fr_0.9fr] md:items-center'>
+          <div>
+            <p className='font-poppins text-sm font-semibold uppercase tracking-[0.18em] text-primary dark:text-primary-dark'>
+              Product studio
+            </p>
+            <h2 className='subhead-text mt-3'>ANlabs</h2>
+            <p className='mt-4 text-slate-600 dark:text-slate-300'>
+              ANlabs is my main product studio for AI automation, SaaS, and
+              Android app experiments. It brings together app launches,
+              automation workflows, product landing pages, and upcoming
+              software ideas under one focused brand.
+            </p>
+          </div>
 
-        <div className='mt-16 flex flex-wrap gap-12'>
+          <a
+            href='https://anlabs-dev.vercel.app/'
+            target='_blank'
+            rel='noopener noreferrer'
+            className='group border border-slate-200 bg-slate-50 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 dark:border-slate-800 dark:bg-slate-900'
+          >
+            <span className='font-poppins text-sm font-semibold text-slate-400 dark:text-slate-500'>
+              Website
+            </span>
+            <span className='mt-2 block break-words font-poppins text-xl font-semibold text-slate-900 transition-colors group-hover:text-primary dark:text-slate-100 dark:group-hover:text-primary-dark'>
+              anlabs-dev.vercel.app
+            </span>
+            <span className='mt-3 block text-sm leading-6 text-slate-600 dark:text-slate-300'>
+              Explore the studio, featured apps, AI automation work, and product
+              roadmap.
+            </span>
+          </a>
+        </div>
+      </section>
+
+      <section className='mt-16 border-t border-slate-200 pt-10 dark:border-slate-800'>
+        <div className='flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between'>
+          <h2 className='subhead-text'>My Skills</h2>
+          <span className='font-poppins text-sm font-semibold text-slate-400 dark:text-slate-500'>
+            Practical stack
+          </span>
+        </div>
+
+        <div className='mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5'>
           {skills.map((skill) => (
-            <div className='flex flex-col items-center w-24' key={skill.name}>
-              <div className='block-container w-20 h-20 transform hover:scale-110 transition-transform duration-300'>
-                <div className='btn-back rounded-xl bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/50 dark:to-purple-900/50' />
-                <div className='btn-front rounded-xl flex justify-center items-center bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm shadow-lg'>
-                  <img
-                    src={skill.imageUrl}
-                    alt={skill.name}
-                    className='w-1/2 h-1/2 object-contain'
-                  />
-                </div>
+            <div
+              className='group border border-slate-200 bg-white p-4 text-center shadow-[0_14px_35px_rgba(15,23,42,0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 dark:border-slate-800 dark:bg-slate-900 dark:shadow-black/20'
+              key={skill.name}
+            >
+              <div className='mx-auto flex h-14 w-14 items-center justify-center rounded-[8px] bg-slate-50 dark:bg-slate-800'>
+                <img
+                  src={skill.imageUrl}
+                  alt={skill.name}
+                  className='h-8 w-8 object-contain'
+                />
               </div>
-              <div className='mt-3 text-center'>
-                <p className='text-sm font-semibold text-slate-800 dark:text-slate-200'>{skill.name}</p>
-                <p className='text-xs text-slate-600 dark:text-slate-400'>{skill.type}</p>
-              </div>
+              <p className='mt-3 text-sm font-semibold text-slate-800 dark:text-slate-200'>
+                {skill.name}
+              </p>
+              <p className='mt-1 text-xs text-slate-500 dark:text-slate-400'>
+                {skill.type}
+              </p>
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
-      <div className='glassmorphism-card p-8 rounded-2xl shadow-xl backdrop-blur-sm bg-white/80 dark:bg-slate-800/80 border border-blue-100/20 dark:border-slate-700/20 mt-8'>
-        <h3 className='subhead-text text-gradient bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent'>Tools & Software</h3>
-        
-        <div className='mt-5 flex flex-col gap-3 text-slate-600 dark:text-slate-300'>
-          <p className='text-lg'>
-            I leverage a variety of professional tools and software to deliver high-quality solutions and streamline my development workflow.
-          </p>
+      <section className='mt-16 border-t border-slate-200 pt-10 dark:border-slate-800'>
+        <h2 className='subhead-text'>Tools & Software</h2>
+        <p className='mt-4 max-w-3xl text-slate-600 dark:text-slate-300'>
+          I use a focused set of development, AI, design, and planning tools to
+          move from idea to working product quickly.
+        </p>
+
+        <div className='mt-8 grid gap-5 md:grid-cols-3'>
+          {toolGroups.map((group) => (
+            <div
+              key={group.title}
+              className='border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900'
+            >
+              <h3 className='font-poppins text-lg font-semibold text-slate-800 dark:text-slate-100'>
+                {group.title}
+              </h3>
+              <ul className='mt-5 space-y-3'>
+                {group.items.map((item) => (
+                  <li
+                    key={item}
+                    className='flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300'
+                  >
+                    <span className={`h-2 w-2 rounded-full ${group.accent}`} />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
+      </section>
 
-        <div className='mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-          {/* Development Tools */}
-          <div className='group p-6 rounded-xl bg-gradient-to-br from-blue-50 to-purple-50 dark:from-slate-800 dark:to-slate-700 hover:from-blue-100 hover:to-purple-100 dark:hover:from-slate-700 dark:hover:to-slate-600 transition-all duration-300 transform hover:-translate-y-1'>
-            <h4 className='text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4'>Development Tools</h4>
-            <ul className='space-y-3'>
-              <li className='flex items-center gap-3 text-slate-700 dark:text-slate-300'>
-                <span className='w-2 h-2 rounded-full bg-blue-500'></span>
-                VS Code / Cursor
-              </li>
-              <li className='flex items-center gap-3 text-slate-700 dark:text-slate-300'>
-                <span className='w-2 h-2 rounded-full bg-blue-500'></span>
-                Git / GitHub
-              </li>
-              <li className='flex items-center gap-3 text-slate-700 dark:text-slate-300'>
-                <span className='w-2 h-2 rounded-full bg-blue-500'></span>
-                Postman
-              </li>
-            </ul>
-          </div>
+      <section className='mt-16 border-t border-slate-200 pt-10 dark:border-slate-800'>
+        <h2 className='subhead-text'>AI & Automation Expertise</h2>
+        <p className='mt-4 max-w-3xl text-slate-600 dark:text-slate-300'>
+          I build AI systems around real workflows: retrieval, voice,
+          automation, and app-building support for faster delivery.
+        </p>
 
-          {/* Design Tools */}
-          <div className='group p-6 rounded-xl bg-gradient-to-br from-blue-50 to-purple-50 dark:from-slate-800 dark:to-slate-700 hover:from-blue-100 hover:to-purple-100 dark:hover:from-slate-700 dark:hover:to-slate-600 transition-all duration-300 transform hover:-translate-y-1'>
-            <h4 className='text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4'>Design Tools</h4>
-            <ul className='space-y-3'>
-              <li className='flex items-center gap-3 text-slate-700 dark:text-slate-300'>
-                <span className='w-2 h-2 rounded-full bg-purple-500'></span>
-                Figma
-              </li>
-              <li className='flex items-center gap-3 text-slate-700 dark:text-slate-300'>
-                <span className='w-2 h-2 rounded-full bg-purple-500'></span>
-                Adobe Photoshop
-              </li>
-              <li className='flex items-center gap-3 text-slate-700 dark:text-slate-300'>
-                <span className='w-2 h-2 rounded-full bg-purple-500'></span>
-                Canva
-              </li>
-            </ul>
-          </div>
-
-          {/* Project Management */}
-          <div className='group p-6 rounded-xl bg-gradient-to-br from-blue-50 to-purple-50 dark:from-slate-800 dark:to-slate-700 hover:from-blue-100 hover:to-purple-100 dark:hover:from-slate-700 dark:hover:to-slate-600 transition-all duration-300 transform hover:-translate-y-1'>
-            <h4 className='text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4'>Project Management</h4>
-            <ul className='space-y-3'>
-              <li className='flex items-center gap-3 text-slate-700 dark:text-slate-300'>
-                <span className='w-2 h-2 rounded-full bg-indigo-500'></span>
-                Jira / Trello
-              </li>
-              <li className='flex items-center gap-3 text-slate-700 dark:text-slate-300'>
-                <span className='w-2 h-2 rounded-full bg-indigo-500'></span>
-                Notion / Confluence
-              </li>
-              <li className='flex items-center gap-3 text-slate-700 dark:text-slate-300'>
-                <span className='w-2 h-2 rounded-full bg-indigo-500'></span>
-                Slack / Discord
-              </li>
-            </ul>
-          </div>
-
-          {/* AI Tools */}
-          <div className='group p-6 rounded-xl bg-gradient-to-br from-blue-50 to-purple-50 dark:from-slate-800 dark:to-slate-700 hover:from-blue-100 hover:to-purple-100 dark:hover:from-slate-700 dark:hover:to-slate-600 transition-all duration-300 transform hover:-translate-y-1'>
-            <h4 className='text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4'>AI Tools</h4>
-            <ul className='space-y-3'>
-              <li className='flex items-center gap-3 text-slate-700 dark:text-slate-300'>
-                <span className='w-2 h-2 rounded-full bg-emerald-500'></span>
-                n8n (Workflow Automation)
-              </li>
-              <li className='flex items-center gap-3 text-slate-700 dark:text-slate-300'>
-                <span className='w-2 h-2 rounded-full bg-emerald-500'></span>
-                LangGraph (LLM Orchestration)
-              </li>
-              <li className='flex items-center gap-3 text-slate-700 dark:text-slate-300'>
-                <span className='w-2 h-2 rounded-full bg-emerald-500'></span>
-                Hugging Face
-              </li>
-              <li className='flex items-center gap-3 text-slate-700 dark:text-slate-300'>
-                <span className='w-2 h-2 rounded-full bg-emerald-500'></span>
-                Supabase
-              </li>
-              <li className='flex items-center gap-3 text-slate-700 dark:text-slate-300'>
-                <span className='w-2 h-2 rounded-full bg-emerald-500'></span>
-                LLMs (OpenAI, Claude, Mistral)
-              </li>
-            </ul>
-          </div>
+        <div className='mt-8 grid gap-5 md:grid-cols-2'>
+          {aiFocus.map((item) => (
+            <div
+              key={item.title}
+              className='border-l-4 border-primary bg-slate-50 p-6 dark:border-primary-dark dark:bg-slate-900'
+            >
+              <h3 className='font-poppins text-lg font-semibold text-slate-800 dark:text-slate-100'>
+                {item.title}
+              </h3>
+              <p className='mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300'>
+                {item.description}
+              </p>
+            </div>
+          ))}
         </div>
-      </div>
+      </section>
 
-      <div className='glassmorphism-card p-8 rounded-2xl shadow-xl backdrop-blur-sm bg-white/80 dark:bg-slate-800/80 border border-blue-100/20 dark:border-slate-700/20 mt-8'>
-        <h3 className='subhead-text text-gradient bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent'>AI & Machine Learning Expertise</h3>
-        
-        <div className='mt-5 flex flex-col gap-3 text-slate-600 dark:text-slate-300'>
-          <p className='text-lg'>
-            Specialized in cutting-edge AI technologies and machine learning solutions, focusing on practical applications and innovative implementations.
-          </p>
-        </div>
+      <section className='mt-16 border-t border-slate-200 pt-10 dark:border-slate-800'>
+        <h2 className='subhead-text'>Work Experience</h2>
+        <p className='mt-4 max-w-3xl text-slate-600 dark:text-slate-300'>
+          I've worked in IT companies and as a freelancer, building practical
+          software and collaborating with teams to ship reliable solutions.
+        </p>
 
-        <div className='mt-12 grid grid-cols-1 md:grid-cols-2 gap-8'>
-          {/* AI Development */}
-          <div className='group relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-50 to-purple-50 dark:from-slate-800 dark:to-slate-700 p-8 hover:shadow-xl transition-all duration-300'>
-            <div className='absolute -right-4 -top-4 w-24 h-24 bg-gradient-to-br from-blue-400/20 to-purple-400/20 dark:from-blue-500/10 dark:to-purple-500/10 rounded-full blur-2xl'></div>
-            <h4 className='text-xl font-semibold text-slate-800 dark:text-slate-200 mb-6 relative z-10'>AI Development</h4>
-            <ul className='space-y-4 relative z-10'>
-              <li className='flex items-start gap-3'>
-                <span className='mt-1.5 w-2 h-2 rounded-full bg-blue-500 flex-shrink-0'></span>
-                <div>
-                  <p className='font-medium text-slate-800 dark:text-slate-200'>Natural Language Processing</p>
-                  <p className='text-sm text-slate-600 dark:text-slate-400 mt-1'>Building advanced NLP models and chatbots</p>
-                </div>
-              </li>
-              <li className='flex items-start gap-3'>
-                <span className='mt-1.5 w-2 h-2 rounded-full bg-blue-500 flex-shrink-0'></span>
-                <div>
-                  <p className='font-medium text-slate-800 dark:text-slate-200'>Computer Vision</p>
-                  <p className='text-sm text-slate-600 dark:text-slate-400 mt-1'>Image recognition and object detection systems</p>
-                </div>
-              </li>
-              <li className='flex items-start gap-3'>
-                <span className='mt-1.5 w-2 h-2 rounded-full bg-blue-500 flex-shrink-0'></span>
-                <div>
-                  <p className='font-medium text-slate-800 dark:text-slate-200'>Deep Learning</p>
-                  <p className='text-sm text-slate-600 dark:text-slate-400 mt-1'>Neural networks and model architecture design</p>
-                </div>
-              </li>
-              <li className='flex items-start gap-3'>
-                <span className='mt-1.5 w-2 h-2 rounded-full bg-blue-500 flex-shrink-0'></span>
-                <div>
-                  <p className='font-medium text-slate-800 dark:text-slate-200'>Database Management</p>
-                  <p className='text-sm text-slate-600 dark:text-slate-400 mt-1'>SQL databases and Vector databases for AI applications</p>
-                </div>
-              </li>
-            </ul>
-          </div>
-
-          {/* AI Tools & Frameworks */}
-          <div className='group relative overflow-hidden rounded-xl bg-gradient-to-br from-purple-50 to-blue-50 dark:from-slate-800 dark:to-slate-700 p-8 hover:shadow-xl transition-all duration-300'>
-            <div className='absolute -right-4 -top-4 w-24 h-24 bg-gradient-to-br from-purple-400/20 to-blue-400/20 dark:from-purple-500/10 dark:to-blue-500/10 rounded-full blur-2xl'></div>
-            <h4 className='text-xl font-semibold text-slate-800 dark:text-slate-200 mb-6 relative z-10'>AI Tools & Frameworks</h4>
-            <ul className='space-y-4 relative z-10'>
-              <li className='flex items-start gap-3'>
-                <span className='mt-1.5 w-2 h-2 rounded-full bg-purple-500 flex-shrink-0'></span>
-                <div>
-                  <p className='font-medium text-slate-800 dark:text-slate-200'>TensorFlow & PyTorch</p>
-                  <p className='text-sm text-slate-600 dark:text-slate-400 mt-1'>Advanced model development and deployment</p>
-                </div>
-              </li>
-              <li className='flex items-start gap-3'>
-                <span className='mt-1.5 w-2 h-2 rounded-full bg-purple-500 flex-shrink-0'></span>
-                <div>
-                  <p className='font-medium text-slate-800 dark:text-slate-200'>OpenAI & Hugging Face</p>
-                  <p className='text-sm text-slate-600 dark:text-slate-400 mt-1'>Integration with state-of-the-art AI models</p>
-                </div>
-              </li>
-              <li className='flex items-start gap-3'>
-                <span className='mt-1.5 w-2 h-2 rounded-full bg-purple-500 flex-shrink-0'></span>
-                <div>
-                  <p className='font-medium text-slate-800 dark:text-slate-200'>Cloud AI Services</p>
-                  <p className='text-sm text-slate-600 dark:text-slate-400 mt-1'>AWS SageMaker, Google AI Platform</p>
-                </div>
-              </li>
-            </ul>
-          </div>
-
-          {/* AI Applications */}
-          <div className='group relative overflow-hidden rounded-xl bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-slate-800 dark:to-slate-700 p-8 hover:shadow-xl transition-all duration-300'>
-            <div className='absolute -right-4 -top-4 w-24 h-24 bg-gradient-to-br from-indigo-400/20 to-blue-400/20 dark:from-indigo-500/10 dark:to-blue-500/10 rounded-full blur-2xl'></div>
-            <h4 className='text-xl font-semibold text-slate-800 dark:text-slate-200 mb-6 relative z-10'>AI Applications</h4>
-            <ul className='space-y-4 relative z-10'>
-              <li className='flex items-start gap-3'>
-                <span className='mt-1.5 w-2 h-2 rounded-full bg-indigo-500 flex-shrink-0'></span>
-                <div>
-                  <p className='font-medium text-slate-800 dark:text-slate-200'>Generative AI</p>
-                  <p className='text-sm text-slate-600 dark:text-slate-400 mt-1'>Text, image, and code generation systems</p>
-                </div>
-              </li>
-              <li className='flex items-start gap-3'>
-                <span className='mt-1.5 w-2 h-2 rounded-full bg-indigo-500 flex-shrink-0'></span>
-                <div>
-                  <p className='font-medium text-slate-800 dark:text-slate-200'>AI Automation</p>
-                  <p className='text-sm text-slate-600 dark:text-slate-400 mt-1'>Workflow optimization and process automation</p>
-                </div>
-              </li>
-              <li className='flex items-start gap-3'>
-                <span className='mt-1.5 w-2 h-2 rounded-full bg-indigo-500 flex-shrink-0'></span>
-                <div>
-                  <p className='font-medium text-slate-800 dark:text-slate-200'>AI Integration</p>
-                  <p className='text-sm text-slate-600 dark:text-slate-400 mt-1'>Seamless AI integration into existing systems</p>
-                </div>
-              </li>
-            </ul>
-          </div>
-
-          {/* AI Research & Innovation */}
-          <div className='group relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-700 p-8 hover:shadow-xl transition-all duration-300'>
-            <div className='absolute -right-4 -top-4 w-24 h-24 bg-gradient-to-br from-blue-400/20 to-indigo-400/20 dark:from-blue-500/10 dark:to-indigo-500/10 rounded-full blur-2xl'></div>
-            <h4 className='text-xl font-semibold text-slate-800 dark:text-slate-200 mb-6 relative z-10'>AI Research & Innovation</h4>
-            <ul className='space-y-4 relative z-10'>
-              <li className='flex items-start gap-3'>
-                <span className='mt-1.5 w-2 h-2 rounded-full bg-blue-500 flex-shrink-0'></span>
-                <div>
-                  <p className='font-medium text-slate-800 dark:text-slate-200'>Model Optimization</p>
-                  <p className='text-sm text-slate-600 dark:text-slate-400 mt-1'>Performance tuning and efficiency improvements</p>
-                </div>
-              </li>
-              <li className='flex items-start gap-3'>
-                <span className='mt-1.5 w-2 h-2 rounded-full bg-blue-500 flex-shrink-0'></span>
-                <div>
-                  <p className='font-medium text-slate-800 dark:text-slate-200'>AI Ethics</p>
-                  <p className='text-sm text-slate-600 dark:text-slate-400 mt-1'>Responsible AI development and implementation</p>
-                </div>
-              </li>
-              <li className='flex items-start gap-3'>
-                <span className='mt-1.5 w-2 h-2 rounded-full bg-blue-500 flex-shrink-0'></span>
-                <div>
-                  <p className='font-medium text-slate-800 dark:text-slate-200'>Emerging Technologies</p>
-                  <p className='text-sm text-slate-600 dark:text-slate-400 mt-1'>Staying current with latest AI advancements</p>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div className='glassmorphism-card p-8 rounded-2xl shadow-xl backdrop-blur-sm bg-white/80 dark:bg-slate-800/80 border border-blue-100/20 dark:border-slate-700/20 mt-8'>
-        <h3 className='subhead-text text-gradient bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent'>Work Experience</h3>
-        <div className='mt-5 flex flex-col gap-3 text-slate-600 dark:text-slate-300'>
-          <p className='text-lg'>
-            I've worked in IT companies and as a Freelancer, continuously leveling up my skills and
-            teaming up with smart people. Here's my professional journey:
-          </p>
-        </div>
-
-        <div className='mt-12 flex'>
+        <div className='mt-12'>
           <VerticalTimeline>
-            {experiences.map((experience, index) => (
+            {experiences.map((experience) => (
               <VerticalTimelineElement
                 key={experience.company_name}
                 date={experience.date}
-                iconStyle={{ 
+                iconStyle={{
                   background: experience.iconBg,
-                  boxShadow: '0 0 0 4px #fff, 0 0 0 8px rgba(59, 130, 246, 0.1)'
+                  boxShadow: "0 0 0 4px #fff, 0 0 0 8px rgba(59, 130, 246, 0.1)",
                 }}
                 icon={
-                  <div className='flex justify-center items-center w-full h-full'>
+                  <div className='flex h-full w-full items-center justify-center'>
                     <img
                       src={experience.icon}
                       alt={experience.company_name}
-                      className='w-[60%] h-[60%] object-contain'
+                      className='h-[60%] w-[60%] object-contain'
                     />
                   </div>
                 }
                 contentStyle={{
-                  background: 'rgba(255, 255, 255, 0.9)',
-                  backdropFilter: 'blur(10px)',
-                  borderRadius: '1rem',
-                  borderBottom: "8px",
-                  borderStyle: "solid",
+                  ...timelineContentStyle,
                   borderBottomColor: experience.iconBg,
-                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-                  transform: index === 0 ? 'scale(1.05)' : 'scale(1)',
-                  transition: 'transform 0.3s ease-in-out',
                 }}
                 contentArrowStyle={{
-                  borderRight: '7px solid rgba(255, 255, 255, 0.9)',
+                  borderRight: "7px solid rgba(255, 255, 255, 0.94)",
                 }}
-                className="dark:content-dark"
+                className='dark:content-dark'
               >
-                <div>
-                  <h3 className='text-gradient bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent text-xl font-poppins font-semibold'>
-                    {experience.title}
-                  </h3>
-                  <p
-                    className='text-slate-600 dark:text-slate-300 font-medium text-base'
-                    style={{ margin: 0 }}
-                  >
-                    {experience.company_name}
-                  </p>
-                </div>
+                <h3 className='font-poppins text-xl font-semibold text-slate-900 dark:text-slate-100'>
+                  {experience.title}
+                </h3>
+                <p className='text-base font-medium text-slate-600 dark:text-slate-300'>
+                  {experience.company_name}
+                </p>
 
-                <ul className='my-5 list-disc ml-5 space-y-2'>
-                  {experience.points.map((point, index) => (
+                <ul className='my-5 ml-5 list-disc space-y-2'>
+                  {experience.points.slice(0, 4).map((point) => (
                     <li
-                      key={`experience-point-${index}`}
-                      className='text-slate-600 dark:text-slate-300 font-normal pl-1 text-sm'
+                      key={point}
+                      className='pl-1 text-sm font-normal text-slate-600 dark:text-slate-300'
                     >
                       {point}
                     </li>
@@ -354,142 +285,63 @@ const About = () => {
             ))}
           </VerticalTimeline>
         </div>
-      </div>
+      </section>
 
-      <div className='glassmorphism-card p-8 rounded-2xl shadow-xl backdrop-blur-sm bg-white/80 dark:bg-slate-800/80 border border-blue-100/20 dark:border-slate-700/20 mt-8'>
-        <h3 className='subhead-text text-gradient bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent'>Education</h3>
-        <div className='mt-5 flex flex-col gap-3 text-slate-600 dark:text-slate-300'>
-          <p className='text-lg'>
-            My academic journey has equipped me with a strong foundation in technology and software development. Here's my educational background:
-          </p>
-        </div>
+      <section className='mt-16 border-t border-slate-200 pt-10 dark:border-slate-800'>
+        <h2 className='subhead-text'>Education</h2>
 
-        <div className='mt-12 flex'>
+        <div className='mt-12'>
           <VerticalTimeline>
-            <VerticalTimelineElement
-              date="2012 - 2017"
-              iconStyle={{ 
-                background: '#3B82F6',
-                boxShadow: '0 0 0 4px #fff, 0 0 0 8px rgba(59, 130, 246, 0.1)'
-              }}
-              icon={
-                <div className='flex justify-center items-center w-full h-full'>
-                  <img
-                    src="https://cdn-icons-png.flaticon.com/512/2103/2103633.png"
-                    alt="university"
-                    className='w-[60%] h-[60%] object-contain'
-                  />
-                </div>
-              }
-              contentStyle={{
-                background: 'rgba(255, 255, 255, 0.9)',
-                backdropFilter: 'blur(10px)',
-                borderRadius: '1rem',
-                borderBottom: "8px",
-                borderStyle: "solid",
-                borderBottomColor: '#3B82F6',
-                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-              }}
-              contentArrowStyle={{
-                borderRight: '7px solid rgba(255, 255, 255, 0.9)',
-              }}
-              className="dark:content-dark"
-            >
-              <div>
-                <h3 className='text-gradient bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent text-xl font-poppins font-semibold'>
-                  Bachelor of Engineering in Computer Science
+            {education.map((item) => (
+              <VerticalTimelineElement
+                key={item.title}
+                date={item.date}
+                iconStyle={{
+                  background: item.accent,
+                  boxShadow: "0 0 0 4px #fff, 0 0 0 8px rgba(59, 130, 246, 0.1)",
+                }}
+                icon={
+                  <div className='flex h-full w-full items-center justify-center'>
+                    <img
+                      src='https://cdn-icons-png.flaticon.com/512/2103/2103633.png'
+                      alt=''
+                      className='h-[60%] w-[60%] object-contain'
+                    />
+                  </div>
+                }
+                contentStyle={{
+                  ...timelineContentStyle,
+                  borderBottomColor: item.accent,
+                }}
+                contentArrowStyle={{
+                  borderRight: "7px solid rgba(255, 255, 255, 0.94)",
+                }}
+                className='dark:content-dark'
+              >
+                <h3 className='font-poppins text-xl font-semibold text-slate-900 dark:text-slate-100'>
+                  {item.title}
                 </h3>
-                <p className='text-slate-600 dark:text-slate-300 font-medium text-base' style={{ margin: 0 }}>
-                  KIT College of Engineering, Kolhapur
+                <p className='text-base font-medium text-slate-600 dark:text-slate-300'>
+                  {item.school}
                 </p>
-                <p className='text-slate-500 dark:text-slate-400 text-sm mt-1' style={{ margin: 0 }}>
-                  Affiliated to Shivaji University, Kolhapur
-                </p>
-              </div>
 
-              <ul className='my-5 list-disc ml-5 space-y-2'>
-                <li className='text-slate-600 dark:text-slate-300 font-normal pl-1 text-sm'>
-                  Specialized in Computer Science and Engineering with focus on Software Development
-                </li>
-                <li className='text-slate-600 dark:text-slate-300 font-normal pl-1 text-sm'>
-                  Graduated with First Class Distinction
-                </li>
-                <li className='text-slate-600 dark:text-slate-300 font-normal pl-1 text-sm'>
-                  Active member of the Computer Science Department's Technical Club
-                </li>
-                <li className='text-slate-600 dark:text-slate-300 font-normal pl-1 text-sm'>
-                  Participated in various technical symposiums and coding competitions
-                </li>
-                <li className='text-slate-600 dark:text-slate-300 font-normal pl-1 text-sm'>
-                  Completed major project on "Web Development and Database Management"
-                </li>
-                <li className='text-slate-600 dark:text-slate-300 font-normal pl-1 text-sm'>
-                  Attended workshops on emerging technologies and programming languages
-                </li>
-              </ul>
-            </VerticalTimelineElement>
-
-            <VerticalTimelineElement
-              date="2011 - 2012"
-              iconStyle={{ 
-                background: '#8B5CF6',
-                boxShadow: '0 0 0 4px #fff, 0 0 0 8px rgba(139, 92, 246, 0.1)'
-              }}
-              icon={
-                <div className='flex justify-center items-center w-full h-full'>
-                  <img
-                    src="https://cdn-icons-png.flaticon.com/512/2103/2103633.png"
-                    alt="college"
-                    className='w-[60%] h-[60%] object-contain'
-                  />
-                </div>
-              }
-              contentStyle={{
-                background: 'rgba(255, 255, 255, 0.9)',
-                backdropFilter: 'blur(10px)',
-                borderRadius: '1rem',
-                borderBottom: "8px",
-                borderStyle: "solid",
-                borderBottomColor: '#8B5CF6',
-                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-              }}
-              contentArrowStyle={{
-                borderRight: '7px solid rgba(255, 255, 255, 0.9)',
-              }}
-              className="dark:content-dark"
-            >
-              <div>
-                <h3 className='text-gradient bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent text-xl font-poppins font-semibold'>
-                  Higher Secondary Education (HSC)
-                </h3>
-                <p className='text-slate-600 dark:text-slate-300 font-medium text-base' style={{ margin: 0 }}>
-                  Maharashtra State Board
-                </p>
-              </div>
-
-              <ul className='my-5 list-disc ml-5 space-y-2'>
-                <li className='text-slate-600 dark:text-slate-300 font-normal pl-1 text-sm'>
-                  Specialized in Physics, Chemistry, and Mathematics
-                </li>
-                <li className='text-slate-600 dark:text-slate-300 font-normal pl-1 text-sm'>
-                  Achieved excellence in Computer Science and Mathematics
-                </li>
-                <li className='text-slate-600 dark:text-slate-300 font-normal pl-1 text-sm'>
-                  Led the Science Club and organized technical workshops
-                </li>
-                <li className='text-slate-600 dark:text-slate-300 font-normal pl-1 text-sm'>
-                  Participated in National Science Exhibition and secured first position
-                </li>
-                <li className='text-slate-600 dark:text-slate-300 font-normal pl-1 text-sm'>
-                  Active member of the Mathematics Olympiad team
-                </li>
-              </ul>
-            </VerticalTimelineElement>
+                <ul className='my-5 ml-5 list-disc space-y-2'>
+                  {item.points.map((point) => (
+                    <li
+                      key={point}
+                      className='pl-1 text-sm font-normal text-slate-600 dark:text-slate-300'
+                    >
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+              </VerticalTimelineElement>
+            ))}
           </VerticalTimeline>
         </div>
-      </div>
+      </section>
 
-      <div className='mt-8'>
+      <div className='mt-12'>
         <CTA />
       </div>
     </section>

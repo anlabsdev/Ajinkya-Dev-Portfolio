@@ -6,6 +6,7 @@ import Chatbot from "./Chatbot";
 import Certification from "./Certification";
 import Connect from "./Connect";
 import ThankYou from "./ThankYou";
+import Studio from "./Studio";
 
 export {
     Home,
@@ -15,5 +16,6 @@ export {
     Chatbot,
     Certification,
     Connect,
-    ThankYou
+    ThankYou,
+    Studio
 }

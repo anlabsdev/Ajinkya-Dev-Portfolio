@@ -1,144 +1,78 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { FiArrowUpRight, FiAward } from "react-icons/fi";
 import { certificates } from "../constants";
-import { styles } from "../styles";
-import { fadeIn, textVariant } from "../utils/motion";
-import { SectionWrapper } from "../hoc";
-import { useState, useEffect } from "react";
-
-const CertificationCard = ({ index, title, organization, date, image, link }) => {
-  const [imageLoaded, setImageLoaded] = useState(false);
-
-  return (
-    <motion.div
-      variants={fadeIn("right", "spring", index * 0.5, 0.75)}
-      className="group bg-gradient-to-br from-white/90 to-white/50 dark:from-slate-900/90 dark:to-slate-800/50 p-5 rounded-2xl sm:w-[360px] w-full hover:shadow-2xl transition-all duration-300 backdrop-blur-sm border border-slate-200/20 dark:border-slate-700/20 hover:border-slate-300/30 dark:hover:border-slate-600/30 cursor-pointer"
-      onClick={() => window.open(link, "_blank")}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-    >
-      <div className="relative w-full h-[230px] overflow-hidden rounded-2xl">
-        {!imageLoaded && (
-          <div className="absolute inset-0 bg-gray-200 dark:bg-slate-800 animate-pulse rounded-2xl" />
-        )}
-        <img
-          src={image}
-          alt={title}
-          className={`w-full h-full object-cover rounded-2xl transform group-hover:scale-105 transition-transform duration-500 ${
-            imageLoaded ? 'opacity-100' : 'opacity-0'
-          }`}
-          onLoad={() => setImageLoaded(true)}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-          <div className="flex items-center justify-between">
-            <span className="text-white text-sm font-medium">{organization}</span>
-            <span className="text-white text-sm font-medium">{date}</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-5 space-y-2">
-        <h3 className="text-slate-900 dark:text-white font-bold text-[24px] bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
-          {title}
-        </h3>
-        <div className="flex items-center space-x-2">
-          <span className="text-slate-600 dark:text-slate-300 text-[14px]">{organization}</span>
-          <span className="w-1 h-1 rounded-full bg-slate-400 dark:bg-slate-500"></span>
-          <span className="text-slate-600 dark:text-slate-300 text-[14px]">{date}</span>
-        </div>
-        <div className="mt-4">
-          <button 
-            className="w-full py-2 px-4 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-500 dark:to-purple-500 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 dark:hover:from-blue-600 dark:hover:to-purple-600 transition-all duration-300 flex items-center justify-center gap-2 group shadow-lg hover:shadow-xl dark:shadow-slate-900/50"
-            onClick={(e) => {
-              e.stopPropagation();
-              window.open(link, "_blank");
-            }}
-          >
-            <span>View Certificate</span>
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/3176/3176355.png"
-              alt="external link"
-              className="w-4 h-4 object-contain transform group-hover:translate-x-1 transition-transform duration-300"
-            />
-          </button>
-        </div>
-      </div>
-    </motion.div>
-  );
-};
 
 const Certification = () => {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // Simulate loading time for certificates
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <section className='max-container bg-gradient-to-br from-white to-slate-100 dark:from-slate-950 dark:to-slate-900 min-h-screen py-20'>
-      <motion.div 
-        variants={textVariant()}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
-      >
-        <h1 className='head-text'>
+    <section className='max-container bg-white dark:bg-slate-950'>
+      <div className='max-w-3xl'>
+        <p className='font-poppins text-sm font-semibold uppercase tracking-[0.18em] text-primary dark:text-primary-dark'>
+          Credentials
+        </p>
+        <h1 className='head-text mt-3'>
           Professional{" "}
           <span className='blue-gradient_text drop-shadow font-semibold'>
             Certifications
           </span>
         </h1>
 
-        <p className='text-slate-600 dark:text-slate-300 mt-2 leading-relaxed'>
-          I've earned several professional certifications that demonstrate my expertise and commitment to continuous learning. These certifications validate my skills and knowledge in various technologies and methodologies.
+        <p className='mt-4 leading-relaxed text-slate-600 dark:text-slate-300'>
+          A clearer view of my learning path across analytics, cloud, backend
+          engineering, and AI. Each item links out where a public certificate or
+          official program page is available.
         </p>
-      </motion.div>
+      </div>
 
-      <AnimatePresence mode="wait">
-        {isLoading ? (
-          <motion.div 
-            className="mt-20 flex flex-wrap gap-7 justify-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+      <div className='mt-14 grid gap-5 md:grid-cols-2'>
+        {certificates.map((certificate) => (
+          <article
+            key={certificate.title}
+            className='group flex h-full flex-col justify-between border border-slate-200 bg-white p-6 shadow-[0_18px_45px_rgba(15,23,42,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 dark:border-slate-800 dark:bg-slate-900 dark:shadow-black/20'
           >
-            {[1, 2, 3].map((index) => (
-              <div 
-                key={index}
-                className="bg-gray-200 dark:bg-slate-800 animate-pulse rounded-2xl sm:w-[360px] w-full h-[400px]"
-              />
-            ))}
-          </motion.div>
-        ) : (
-          <motion.div 
-            className="mt-20 flex flex-wrap gap-7 justify-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            {certificates.map((certificate, index) => (
-              <CertificationCard
-                key={`certificate-${index}`}
-                index={index}
-                {...certificate}
-              />
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <div>
+              <div className='mb-6 flex items-start justify-between gap-4'>
+                <div className='flex h-12 w-12 items-center justify-center rounded-[8px] bg-blue-50 text-primary dark:bg-slate-800 dark:text-primary-dark'>
+                  <FiAward className='h-6 w-6' />
+                </div>
+                <span className='rounded-full border border-slate-200 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500 dark:border-slate-700 dark:text-slate-400'>
+                  {certificate.category}
+                </span>
+              </div>
+
+              <h2 className='font-poppins text-xl font-semibold text-slate-900 dark:text-slate-100'>
+                {certificate.title}
+              </h2>
+              <div className='mt-2 flex flex-wrap items-center gap-2 text-sm text-slate-500 dark:text-slate-400'>
+                <span>{certificate.organization}</span>
+                <span className='h-1 w-1 rounded-full bg-slate-400' />
+                <span>{certificate.date}</span>
+              </div>
+              <p className='mt-4 text-sm leading-6 text-slate-600 dark:text-slate-300'>
+                {certificate.summary}
+              </p>
+            </div>
+
+            <div className='mt-6'>
+              {certificate.link ? (
+                <a
+                  href={certificate.link}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='inline-flex items-center gap-2 font-poppins text-sm font-semibold text-primary transition-opacity hover:opacity-80 dark:text-primary-dark'
+                >
+                  View credential
+                  <FiArrowUpRight className='h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5' />
+                </a>
+              ) : (
+                <span className='font-poppins text-sm font-semibold text-slate-400 dark:text-slate-500'>
+                  Credential available on request
+                </span>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
     </section>
   );
 };
 
-export default SectionWrapper(Certification, "certification");
-
-
-
-
+export default Certification;

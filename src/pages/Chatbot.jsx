@@ -1,650 +1,272 @@
-import { useState, useRef, useEffect, Suspense } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FiSend, FiUser, FiMinimize2, FiMaximize2 } from 'react-icons/fi';
-import { BsRobot, BsArrowLeft } from 'react-icons/bs';
-import styled from 'styled-components';
-import { Canvas } from '@react-three/fiber';
-import { SmallRobotCrowdAnimated } from '../models';
-import { Loader } from '../components';
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { BsArrowLeft, BsRobot } from "react-icons/bs";
+import { FiMaximize2, FiMinimize2, FiSend, FiUser } from "react-icons/fi";
 
-const ChatbotContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  height: 100vh;
-  padding-top: 80px;
-  background: transparent;
-  color: #e2e8f0;
-  position: relative;
-  overflow: hidden;
+const knowledgeBase = {
+  skills: {
+    development: [
+      "React, Next.js, JavaScript, TypeScript, Tailwind CSS",
+      "Python, Django, FastAPI, SQL, MongoDB, Supabase",
+      "Git, GitHub, APIs, responsive UI, and deployment workflows",
+    ],
+    ai: [
+      "Personalised RAG systems",
+      "Voice agents",
+      "AI automation workflows",
+      "Social media AI managers",
+      "AI software builder workflows with LLMs, LangGraph, n8n, and Supabase",
+    ],
+    tools: [
+      "VS Code / Cursor",
+      "Git / GitHub",
+      "Postman",
+      "Figma",
+      "Canva",
+      "n8n",
+      "LangGraph",
+      "Hugging Face",
+      "OpenAI / Claude / Mistral",
+    ],
+  },
+  projects: [
+    "Android Apps: Subreminder App, Trip Tally App, Woodify Icon App",
+    "Product Studio: ANlabs (https://anlabs-dev.vercel.app/)",
+    "Web Projects: Toothsi Dental Clinic, Subreminder Web App",
+    "AI Automation: Personalised RAG, Voice Agent, Social Media AI Manager",
+  ],
+  certifications: [
+    "Google Data Analytics Professional Certificate",
+    "AWS Certified Solutions Architect",
+    "Machine Learning Specialization",
+    "Microsoft Certified: Azure Developer Associate",
+    "Python Django Development",
+    "C, C++ Programming",
+  ],
+  contact: {
+    email: "ajinkya.narke@gmail.com",
+    linkedin: "linkedin.com/in/ajinkya-narke",
+    github: "github.com/AjinkyaNarke",
+    phone: "+91 7020404952",
+  },
+};
 
-  @media (max-width: 768px) {
-    flex-direction: column;
-    padding-top: 60px;
+const formatList = (items) => items.map((item) => `- ${item}`).join("\n");
+
+const generateResponse = (userInput) => {
+  const input = userInput.toLowerCase();
+
+  if (input.includes("skill") || input.includes("expertise") || input.includes("tech")) {
+    return `Ajinkya's core skills:\n\nDevelopment:\n${formatList(knowledgeBase.skills.development)}\n\nAI and automation:\n${formatList(knowledgeBase.skills.ai)}`;
   }
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: 
-      radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
-    pointer-events: none;
+  if (input.includes("project") || input.includes("work") || input.includes("portfolio")) {
+    return `Current featured projects:\n\n${formatList(knowledgeBase.projects)}`;
   }
 
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    opacity: 0.4;
-    pointer-events: none;
-  }
-`;
-
-const ChatSection = styled.div`
-  width: 50%;
-  height: calc(100vh - 80px);
-  display: flex;
-  flex-direction: column;
-  border-right: 1px solid rgba(203, 213, 225, 0.2);
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 1rem;
-  margin: 1rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    height: calc(100vh - 140px);
-    margin: 0.5rem;
-    border-radius: 0.75rem;
-  }
-`;
-
-const ModelSection = styled.div`
-  width: 50%;
-  height: calc(100vh - 80px);
-  position: relative;
-  overflow: hidden;
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  background: url('/bot.png') center center/cover no-repeat;
-  margin: 1rem;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    height: 300px;
-    margin: 0.5rem;
-    border-radius: 0.75rem;
-  }
-`;
-
-const CanvasContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-`;
-
-const ChatHeader = styled.div`
-  text-align: center;
-  padding: 1.5rem;
-  position: relative;
-  z-index: 1;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(203, 213, 225, 0.2);
-  border-radius: 1rem 1rem 0 0;
-  transition: all 0.3s ease;
-
-  @media (max-width: 768px) {
-    padding: 1rem;
+  if (input.includes("certification") || input.includes("certificate") || input.includes("certified")) {
+    return `Certifications and learning:\n\n${formatList(knowledgeBase.certifications)}`;
   }
 
-  h1 {
-    font-size: 2rem;
-    font-weight: 700;
-    background: linear-gradient(45deg, #3b82f6, #8b5cf6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 0.5rem;
-    transition: all 0.3s ease;
-
-    @media (max-width: 768px) {
-      font-size: 1.5rem;
-    }
+  if (input.includes("contact") || input.includes("reach") || input.includes("email") || input.includes("phone")) {
+    return `You can contact Ajinkya here:\n\nEmail: ${knowledgeBase.contact.email}\nLinkedIn: ${knowledgeBase.contact.linkedin}\nGitHub: ${knowledgeBase.contact.github}\nPhone: ${knowledgeBase.contact.phone}`;
   }
 
-  p {
-    color: #64748b;
-    font-size: 1rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
-
-    @media (max-width: 768px) {
-      font-size: 0.875rem;
-    }
-  }
-`;
-
-const BackButton = styled(motion.button)`
-  position: absolute;
-  left: 2rem;
-  top: 50%;
-  transform: translateY(-50%);
-  background: white;
-  border: 2px solid #e2e8f0;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: #3b82f6;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-
-  &:hover {
-    background: #f8fafc;
-    transform: translateY(-50%) scale(1.1);
-    border-color: #3b82f6;
-  }
-`;
-
-const MessagesContainer = styled.div`
-  flex: 1;
-  overflow-y: auto;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  scroll-behavior: smooth;
-  position: relative;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-
-  &::-webkit-scrollbar {
-    width: 6px;
+  if (input.includes("tool") || input.includes("software") || input.includes("stack")) {
+    return `Tools Ajinkya uses:\n\n${formatList(knowledgeBase.skills.tools)}`;
   }
 
-  &::-webkit-scrollbar-track {
-    background: rgba(241, 245, 249, 0.1);
-    border-radius: 3px;
-  }
+  return "I can help with Ajinkya's skills, projects, certifications, tools, and contact details. Try asking: what AI automation projects has Ajinkya built?";
+};
 
-  &::-webkit-scrollbar-thumb {
-    background: rgba(203, 213, 225, 0.3);
-    border-radius: 3px;
-  }
-`;
-
-const MessageBubble = styled(motion.div)`
-  max-width: 70%;
-  padding: 1.2rem;
-  border-radius: 1rem;
-  position: relative;
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-
-  @media (max-width: 768px) {
-    max-width: 85%;
-    padding: 1rem;
-    gap: 0.75rem;
-  }
-
-  ${props => props.isUser ? `
-    align-self: flex-end;
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-    color: white;
-    border-bottom-right-radius: 0.25rem;
-  ` : `
-    align-self: flex-start;
-    background: rgba(30, 41, 59, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #e2e8f0;
-    border-bottom-left-radius: 0.25rem;
-  `}
-`;
-
-const MessageContent = styled.div`
-  flex: 1;
-  line-height: 1.6;
-  font-size: 1.1rem;
-  transition: all 0.3s ease;
-
-  @media (max-width: 768px) {
-    font-size: 0.95rem;
-    line-height: 1.5;
-  }
-`;
-
-const MessageIcon = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: ${props => props.isUser ? 'rgba(255, 255, 255, 0.2)' : 'rgba(30, 41, 59, 0.8)'};
-  flex-shrink: 0;
-  font-size: 1.2rem;
-  color: ${props => props.isUser ? 'white' : '#60a5fa'};
-  transition: all 0.3s ease;
-
-  @media (max-width: 768px) {
-    width: 32px;
-    height: 32px;
-    font-size: 1rem;
-  }
-`;
-
-const InputContainer = styled.div`
-  position: relative;
-  padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.1);
-  border-top: 1px solid rgba(203, 213, 225, 0.2);
-  border-radius: 0 0 1rem 1rem;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-
-  @media (max-width: 768px) {
-    padding: 1rem;
-  }
-`;
-
-const MessageInput = styled.input`
-  width: 100%;
-  padding: 1.2rem 4rem 1.2rem 1.5rem;
-  border-radius: 1rem;
-  border: 2px solid #e2e8f0;
-  background: white;
-  color: #1e293b;
-  font-size: 1.1rem;
-  transition: all 0.3s ease;
-
-  @media (max-width: 768px) {
-    padding: 1rem 3.5rem 1rem 1.25rem;
-    font-size: 1rem;
-    border-radius: 0.75rem;
-  }
-
-  &:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-  }
-
-  &::placeholder {
-    color: #94a3b8;
-  }
-`;
-
-const SendButton = styled(motion.button)`
-  position: absolute;
-  right: 2rem;
-  top: 50%;
-  transform: translateY(-50%);
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-  border: none;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: white;
-  font-size: 1.2rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2);
-
-  @media (max-width: 768px) {
-    right: 1.5rem;
-    width: 2.5rem;
-    height: 2.5rem;
-    font-size: 1rem;
-  }
-
-  &:hover {
-    transform: translateY(-50%) scale(1.1);
-    box-shadow: 0 6px 8px -1px rgba(59, 130, 246, 0.3);
-  }
-`;
-
-const TypingIndicator = styled(motion.div)`
-  display: flex;
-  gap: 0.5rem;
-  padding: 1rem 1.5rem;
-  background: rgba(30, 41, 59, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1rem;
-  width: fit-content;
-  margin-top: 0.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-
-  span {
-    width: 8px;
-    height: 8px;
-    background: linear-gradient(135deg, #60a5fa, #a78bfa);
-    border-radius: 50%;
-  }
-`;
-
-const MinimizeButton = styled(motion.button)`
-  position: absolute;
-  right: 2rem;
-  top: 50%;
-  transform: translateY(-50%);
-  background: white;
-  border: 2px solid #e2e8f0;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: #3b82f6;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-
-  &:hover {
-    background: #f8fafc;
-    transform: translateY(-50%) scale(1.1);
-    border-color: #3b82f6;
-  }
-`;
+const quickPrompts = ["Skills", "Projects", "AI Automation", "Contact"];
 
 const Chatbot = () => {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "Hello! I'm Ajinkya's  AI assistant. I can tell you about my skills, projects, tools, certifications, and how to contact me. What would you like to know?",
-      isUser: false
-    }
+      text: "Hello. I'm Ajinkya's AI assistant. Ask me about skills, projects, AI automation, certifications, or contact details.",
+      isUser: false,
+    },
   ]);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
-  const messagesEndRef = useRef(null);
+  const messagesContainerRef = useRef(null);
 
-  // Knowledge base for the AI assistant
-  const knowledgeBase = {
-    skills: {
-      development: [
-        "Full Stack Development",
-        "React.js & Next.js",
-        "Node.js & Express",
-        "Python & Django",
-        "Database Management (SQL & NoSQL)",
-        "SQL Databases",
-        "Vector Databases"
-      ],
-      ai: [
-        "Natural Language Processing",
-        "Computer Vision",
-        "Deep Learning",
-        "TensorFlow & PyTorch",
-        "AI Model Development"
-      ],
-      tools: [
-        "VS Code / Cursor",
-        "Git / GitHub",
-        "Docker & Kubernetes",
-        "AWS & Google Cloud",
-        "Postman",
-        "Figma",
-        "Adobe Photoshop",
-        "Canva",
-        "n8n (Workflow Automation)",
-        "LangGraph (LLM Orchestration)",
-        "Hugging Face",
-        "Supabase",
-        "LLMs (OpenAI, Claude, Mistral)"
-      ]
-    },
-    projects: [
-      {
-        name: "3D Portfolio",
-        description: "An interactive 3D portfolio built with React Three Fiber, showcasing my work and skills in an immersive environment.",
-        tech: ["React", "Three.js", "Tailwind CSS", "Framer Motion"]
-      },
-      {
-        name: "AI-Powered Chatbot",
-        description: "An intelligent chatbot system that can understand and respond to user queries using advanced NLP techniques.",
-        tech: ["Python", "TensorFlow", "NLP", "React"]
-      }
-    ],
-    certifications: [
-      {
-        name: "AWS Certified Solutions Architect",
-        issuer: "Amazon Web Services",
-        year: "2023"
-      },
-      {
-        name: "Google Cloud Professional Developer",
-        issuer: "Google",
-        year: "2023"
-      },
-      {
-        name: "TensorFlow Developer Certificate",
-        issuer: "Google",
-        year: "2023"
-      }
-    ],
-    contact: {
-      email: "ajinkya.narke@example.com",
-      linkedin: "linkedin.com/in/ajinkya-narke",
-      github: "github.com/ajinkya-narke",
-      phone: "+917020404952"
-    }
-  };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
-  const generateResponse = (userInput) => {
-    const input = userInput.toLowerCase();
-    
-    // Skills related queries
-    if (input.includes("skill") || input.includes("expertise") || input.includes("proficient")) {
-      return `I have expertise in several areas:\n\nDevelopment Skills:\n${knowledgeBase.skills.development.join(", ")}\n\nAI & ML Skills:\n${knowledgeBase.skills.ai.join(", ")}\n\nTools & Technologies:\n${knowledgeBase.skills.tools.join(", ")}`;
+  useEffect(() => {
+    const container = messagesContainerRef.current;
+    if (container) {
+      container.scrollTop = container.scrollHeight;
     }
-    
-    // Projects related queries
-    if (input.includes("project") || input.includes("work") || input.includes("portfolio")) {
-      return `Here are some of my notable projects:\n\n${knowledgeBase.projects.map(project => 
-        `${project.name}:\n${project.description}\nTechnologies: ${project.tech.join(", ")}`
-      ).join("\n\n")}`;
-    }
-    
-    // Certifications related queries
-    if (input.includes("certification") || input.includes("certificate") || input.includes("certified")) {
-      return `I hold the following certifications:\n\n${knowledgeBase.certifications.map(cert => 
-        `${cert.name} (${cert.issuer}, ${cert.year})`
-      ).join("\n")}`;
-    }
-    
-    // Contact related queries
-    if (input.includes("contact") || input.includes("reach") || input.includes("email") || input.includes("phone")) {
-      return `You can reach me through:\n\nEmail: ${knowledgeBase.contact.email}\nLinkedIn: ${knowledgeBase.contact.linkedin}\nGitHub: ${knowledgeBase.contact.github}\nPhone: ${knowledgeBase.contact.phone}`;
-    }
-    
-    // Tools related queries
-    if (input.includes("tool") || input.includes("software") || input.includes("technology")) {
-      return `I work with various tools and technologies:\n\nDevelopment Tools:\n${knowledgeBase.skills.tools.join(", ")}\n\nAI Tools:\n${knowledgeBase.skills.ai.join(", ")}`;
-    }
-    
-    // Default response for unrecognized queries
-    return "I can tell you about my skills, projects, tools, certifications, and contact information. What specific aspect would you like to know more about?";
-  };
+  }, [messages, isTyping]);
 
-  const handleSend = async () => {
-    if (!input.trim()) return;
+  const sendMessage = (messageText = input) => {
+    const trimmed = messageText.trim();
+    if (!trimmed) return;
 
     const userMessage = {
-      id: messages.length + 1,
-      text: input,
-      isUser: true
+      id: Date.now(),
+      text: trimmed,
+      isUser: true,
     };
 
-    setMessages(prev => [...prev, userMessage]);
-    setInput('');
+    setMessages((current) => [...current, userMessage]);
+    setInput("");
     setIsTyping(true);
 
-    // Generate AI response based on user input
     setTimeout(() => {
-      const aiResponse = {
-        id: messages.length + 2,
-        text: generateResponse(input),
-        isUser: false
-      };
-      setMessages(prev => [...prev, aiResponse]);
+      setMessages((current) => [
+        ...current,
+        {
+          id: Date.now() + 1,
+          text: generateResponse(trimmed),
+          isUser: false,
+        },
+      ]);
       setIsTyping(false);
-    }, 1500);
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleSend();
-    }
+    }, 600);
   };
 
   return (
-    <ChatbotContainer>
-      <ChatSection>
-        <ChatHeader>
-          <BackButton
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => window.history.back()}
-          >
-            <BsArrowLeft />
-          </BackButton>
-          <h1>Ajinkya Narke's AI Assistant</h1>
-          <p>Ask me anything about Ajinkya Narke</p>
-          <MinimizeButton
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => setIsMinimized(!isMinimized)}
-          >
-            {isMinimized ? <FiMaximize2 /> : <FiMinimize2 />}
-          </MinimizeButton>
-        </ChatHeader>
-
-        <MessagesContainer>
-          <AnimatePresence>
-            {messages.map((message) => (
-              <MessageBubble
-                key={message.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-                isUser={message.isUser}
-              >
-                <MessageIcon isUser={message.isUser}>
-                  {message.isUser ? <FiUser /> : <BsRobot />}
-                </MessageIcon>
-                <MessageContent>{message.text}</MessageContent>
-              </MessageBubble>
-            ))}
-          </AnimatePresence>
-
-          {isTyping && (
-            <TypingIndicator
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+    <section className='min-h-screen bg-slate-950 px-4 pb-8 pt-[92px] text-slate-100 sm:px-6 lg:px-8'>
+      <div className='mx-auto grid max-w-6xl gap-6 lg:grid-cols-[minmax(0,1fr)_360px]'>
+        <div className='flex min-h-[calc(100vh-132px)] min-w-0 flex-col overflow-hidden border border-slate-800 bg-slate-900 shadow-[0_24px_70px_rgba(0,0,0,0.32)]'>
+          <header className='relative border-b border-slate-800 bg-slate-900 px-4 py-5 sm:px-6'>
+            <button
+              type='button'
+              onClick={() => window.history.back()}
+              className='absolute left-4 top-5 flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-blue-300 transition-colors hover:bg-slate-700'
+              aria-label='Go back'
             >
-              <motion.span
-                animate={{ y: [0, -5, 0] }}
-                transition={{ repeat: Infinity, duration: 0.5 }}
-              />
-              <motion.span
-                animate={{ y: [0, -5, 0] }}
-                transition={{ repeat: Infinity, duration: 0.5, delay: 0.1 }}
-              />
-              <motion.span
-                animate={{ y: [0, -5, 0] }}
-                transition={{ repeat: Infinity, duration: 0.5, delay: 0.2 }}
-              />
-            </TypingIndicator>
+              <BsArrowLeft />
+            </button>
+
+            <div className='mx-12 text-center'>
+              <h1 className='font-poppins text-xl font-semibold text-slate-50 sm:text-2xl'>
+                Ajinkya's AI Assistant
+              </h1>
+              <p className='mt-1 text-sm text-slate-400'>
+                Portfolio answers, fast and focused.
+              </p>
+            </div>
+
+            <button
+              type='button'
+              onClick={() => setIsMinimized((current) => !current)}
+              className='absolute right-4 top-5 flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-blue-300 transition-colors hover:bg-slate-700'
+              aria-label={isMinimized ? "Expand chat" : "Minimize chat"}
+            >
+              {isMinimized ? <FiMaximize2 /> : <FiMinimize2 />}
+            </button>
+          </header>
+
+          {!isMinimized && (
+            <>
+              <div className='flex flex-wrap gap-2 border-b border-slate-800 bg-slate-950/50 px-4 py-3 sm:px-6'>
+                {quickPrompts.map((prompt) => (
+                  <button
+                    type='button'
+                    key={prompt}
+                    onClick={() => sendMessage(prompt)}
+                    className='rounded-full border border-slate-700 px-3 py-1.5 text-sm font-medium text-slate-300 transition-colors hover:border-blue-400 hover:text-blue-300'
+                  >
+                    {prompt}
+                  </button>
+                ))}
+              </div>
+
+              <div
+                ref={messagesContainerRef}
+                className='flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-4 py-6 sm:px-6'
+              >
+                <AnimatePresence>
+                  {messages.map((message) => (
+                    <motion.div
+                      key={message.id}
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -12 }}
+                      className={`flex max-w-[92%] gap-3 rounded-[8px] p-4 shadow-lg sm:max-w-[78%] ${
+                        message.isUser
+                          ? "self-end bg-blue-600 text-white"
+                          : "self-start border border-slate-800 bg-slate-800 text-slate-100"
+                      }`}
+                    >
+                      <div className='mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/10'>
+                        {message.isUser ? <FiUser /> : <BsRobot />}
+                      </div>
+                      <p className='whitespace-pre-wrap break-words text-sm leading-6 sm:text-base'>
+                        {message.text}
+                      </p>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+
+                {isTyping && (
+                  <div className='self-start rounded-[8px] border border-slate-800 bg-slate-800 px-4 py-3 text-sm text-slate-300'>
+                    Typing...
+                  </div>
+                )}
+              </div>
+
+              <form
+                className='border-t border-slate-800 bg-slate-900 p-4 sm:p-5'
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  sendMessage();
+                }}
+              >
+                <div className='relative'>
+                  <input
+                    value={input}
+                    onChange={(event) => setInput(event.target.value)}
+                    placeholder='Ask about projects, AI, skills...'
+                    className='h-12 w-full rounded-[8px] border border-slate-700 bg-white pr-14 pl-4 text-slate-900 outline-none transition-colors focus:border-blue-500'
+                  />
+                  <button
+                    type='submit'
+                    className='absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-blue-600 text-white transition-colors hover:bg-blue-700'
+                    aria-label='Send message'
+                  >
+                    <FiSend />
+                  </button>
+                </div>
+              </form>
+            </>
           )}
-          <div ref={messagesEndRef} />
-        </MessagesContainer>
+        </div>
 
-        <InputContainer>
-          <MessageInput
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="Type your message..."
-          />
-          <SendButton
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={handleSend}
-          >
-            <FiSend />
-          </SendButton>
-        </InputContainer>
-      </ChatSection>
+        <aside className='hidden border border-slate-800 bg-slate-900 p-6 shadow-[0_24px_70px_rgba(0,0,0,0.22)] lg:sticky lg:top-24 lg:block'>
+          <div className='flex h-12 w-12 items-center justify-center rounded-[8px] bg-blue-600 text-white'>
+            <BsRobot className='h-6 w-6' />
+          </div>
+          <h2 className='mt-6 font-poppins text-2xl font-semibold text-slate-50'>
+            Built for recruiters and collaborators
+          </h2>
+          <p className='mt-4 text-sm leading-6 text-slate-300'>
+            This assistant keeps answers scoped to Ajinkya's portfolio and no
+            longer loads the oversized 3D robot asset, so the page responds
+            faster on mobile and desktop.
+          </p>
 
-      <ModelSection>
-        <CanvasContainer>
-          <Canvas
-            camera={{
-              position: [0, 0.2, 7],
-              fov: 38,
-              near: 0.1,
-              far: 1000,
-            }}
-            shadows
-            gl={{ preserveDrawingBuffer: true }}
-          >
-            <directionalLight position={[0, 5, 5]} intensity={3.5} color={'#e6f0ff'} castShadow />
-            <ambientLight intensity={1.5} color={'#e6f0ff'} />
-            <pointLight position={[0, 2, 3]} intensity={1.8} color={'#fffbe6'} castShadow />
-            <pointLight position={[0, 0, 7]} intensity={1.2} color={'#ffffff'} />
-            <spotLight
-              position={[0, 6, 6]}
-              angle={0.22}
-              penumbra={0.9}
-              intensity={2.8}
-              color={'#e6f0ff'}
-              castShadow
-            />
-            <Suspense fallback={<Loader />}>
-              <SmallRobotCrowdAnimated
-                currentAnimation="idle"
-                position={[2, -1.5, 0]}
-                angle={0.15}
-                rotation={[0, -3.14, 0]}
-                scale={[0.55, 0.55, 0.55]}
-                onClick={(e) => {"Hello"}}
-                onPointerOver={(e) => {"Ask Me Anything"}}
-                onPointerOut={(e) => {}}
-                onPointerMove={(e) => {}}
-              />
-            </Suspense>
-          </Canvas>
-        </CanvasContainer>
-      </ModelSection>
-    </ChatbotContainer>
+          <div className='mt-8 space-y-4'>
+            {["AI Automation", "Software Engineering", "Open to Full-Time"].map((item) => (
+              <div
+                key={item}
+                className='border-l-2 border-blue-500 pl-4 text-sm font-semibold text-slate-200'
+              >
+                {item}
+              </div>
+            ))}
+          </div>
+        </aside>
+      </div>
+    </section>
   );
 };
 

@@ -1,8 +1,10 @@
 import { Canvas } from '@react-three/fiber'
-import { Suspense } from 'react'
+import { Suspense, useState } from 'react'
+import { ErrorBoundary } from 'react-error-boundary'
 import { DeadpoolDancing } from '../models/deadpool_dancing'
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei'
 import { motion } from 'framer-motion'
+import { canCreateWebGLContext } from '../utils/webgl'
 
 const ModelAnimation = () => {
   return (
@@ -36,6 +38,8 @@ const ModelAnimation = () => {
 }
 
 const ThankYou = () => {
+  const [hasWebGL] = useState(canCreateWebGLContext)
+
   return (
     <div className="relative w-full h-screen bg-gradient-to-b from-black to-purple-900 overflow-hidden">
       {/* Animated Background Elements */}
@@ -64,15 +68,19 @@ const ThankYou = () => {
 
       {/* 3D Model Container */}
       <div className="absolute inset-0 pointer-events-none">
-        <Canvas
-          camera={{ position: [0, 0, 5], fov: 50 }}
-          shadows
-          dpr={[1, 2]}
-        >
-          <Suspense fallback={null}>
-            <ModelAnimation />
-          </Suspense>
-        </Canvas>
+        <ErrorBoundary fallback={null}>
+          {hasWebGL && (
+            <Canvas
+              camera={{ position: [0, 0, 5], fov: 50 }}
+              shadows
+              dpr={[1, 2]}
+            >
+              <Suspense fallback={null}>
+                <ModelAnimation />
+              </Suspense>
+            </Canvas>
+          )}
+        </ErrorBoundary>
       </div>
 
       {/* Content Overlay */}

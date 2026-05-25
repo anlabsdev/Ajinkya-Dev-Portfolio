@@ -14,7 +14,7 @@
   }
 
   body {
-    @apply bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors duration-300;
+    @apply bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors duration-300 overflow-x-hidden;
   }
 
   .vertical-timeline-element-content {
@@ -45,7 +45,7 @@
 
 body {
   font-family: "Work Sans", sans-serif;
-  @apply transition-colors duration-300 bg-background-light dark:bg-background-dark;
+  @apply transition-colors duration-300 bg-background-light dark:bg-background-dark overflow-x-hidden;
 }
 
 body:has(.card[data-color="blue"]:hover) {
@@ -58,7 +58,7 @@ body:has(.card[data-color="green"]:hover) {
 
 @layer utilities {
   .max-container {
-    @apply max-w-5xl mx-auto px-4 sm:px-8 md:px-12 lg:px-16 pb-12 !pt-[126px] min-h-[calc(100vh-80px)];
+    @apply w-full max-w-5xl mx-auto px-4 sm:px-8 md:px-12 lg:px-16 pb-12 !pt-[126px] min-h-[calc(100vh-80px)] overflow-x-hidden;
   }
 
   .head-text {

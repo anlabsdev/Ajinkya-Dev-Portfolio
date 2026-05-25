@@ -7,6 +7,7 @@ const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Projects = lazy(() => import("./pages/Projects"));
+const Studio = lazy(() => import("./pages/Studio"));
 const Certification = lazy(() => import("./pages/Certification"));
 const Chatbot = lazy(() => import("./pages/Chatbot"));
 const Connect = lazy(() => import("./pages/Connect"));
@@ -24,7 +25,7 @@ const PageLoader = () => (
 
 const App = () => {
   return (
-    <main className='bg-slate-300/20 dark:bg-background-dark transition-colors duration-300'>
+    <main className='overflow-x-hidden bg-slate-300/20 dark:bg-background-dark transition-colors duration-300'>
       <Router>
         <Navbar />
         <Suspense fallback={<PageLoader />}>
@@ -37,6 +38,7 @@ const App = () => {
                   <Routes>
                     <Route path='/about' element={<About />} />
                     <Route path='/projects' element={<Projects />} />
+                    <Route path='/studio' element={<Studio />} />
                     <Route path='/certification' element={<Certification />} />
                     <Route path='/chatbot' element={<Chatbot />} />
                     <Route path='/connect' element={<Connect />} />
