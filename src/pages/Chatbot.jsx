@@ -1,7 +1,16 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, Suspense } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { BsArrowLeft, BsRobot } from "react-icons/bs";
 import { FiMaximize2, FiMinimize2, FiSend, FiUser } from "react-icons/fi";
+import { Canvas } from "@react-three/fiber";
+import { ErrorBoundary } from "react-error-boundary";
+import { Loader } from "../components";
+import { RobotHipHopDancing } from "../models/robot_hip_hop_dancing";
+import { canCreateWebGLContext } from "../utils/webgl";
+
+const ModelFallback = () => (
+  <div className='flex h-full items-center justify-center bg-slate-900 rounded-[8px]' />
+);
 
 const knowledgeBase = {
   skills: {
@@ -92,6 +101,7 @@ const Chatbot = () => {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
+  const [hasWebGL] = useState(canCreateWebGLContext);
   const messagesContainerRef = useRef(null);
 
   useEffect(() => {
@@ -242,16 +252,34 @@ const Chatbot = () => {
         </div>
 
         <aside className='hidden border border-slate-800 bg-slate-900 p-6 shadow-[0_24px_70px_rgba(0,0,0,0.22)] lg:sticky lg:top-24 lg:block'>
-          <div className='flex h-12 w-12 items-center justify-center rounded-[8px] bg-blue-600 text-white'>
-            <BsRobot className='h-6 w-6' />
+          <div className='relative mb-6 h-[250px] w-full overflow-hidden border border-slate-800 bg-slate-950/50 rounded-[8px]'>
+            <ErrorBoundary fallback={<ModelFallback />}>
+              {hasWebGL ? (
+                <Canvas camera={{ position: [0, 0, 5], fov: 50, near: 0.1, far: 1000 }}>
+                  <ambientLight intensity={1.5} />
+                  <directionalLight position={[0, 0, 1]} intensity={2.5} />
+                  <pointLight position={[5, 10, 0]} intensity={2} />
+                  <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={2} />
+
+                  <Suspense fallback={<Loader />}>
+                    <RobotHipHopDancing
+                      position={[0, -1.6, 0]}
+                      rotation={[0, 0, 0]}
+                      scale={[1.8, 1.8, 1.8]}
+                    />
+                  </Suspense>
+                </Canvas>
+              ) : (
+                <ModelFallback />
+              )}
+            </ErrorBoundary>
           </div>
-          <h2 className='mt-6 font-poppins text-2xl font-semibold text-slate-50'>
-            Built for recruiters and collaborators
+
+          <h2 className='font-poppins text-2xl font-semibold text-slate-50'>
+            Interactive 3D AI Assistant
           </h2>
           <p className='mt-4 text-sm leading-6 text-slate-300'>
-            This assistant keeps answers scoped to Ajinkya's portfolio and no
-            longer loads the oversized 3D robot asset, so the page responds
-            faster on mobile and desktop.
+            Feel free to ask the assistant anything about my skills, projects, certifications, and experience. You can also interact with the 3D robot model above!
           </p>
 
           <div className='mt-8 space-y-4'>
