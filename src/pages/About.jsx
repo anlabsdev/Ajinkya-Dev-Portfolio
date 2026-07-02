@@ -2,8 +2,9 @@ import {
   VerticalTimeline,
   VerticalTimelineElement,
 } from "react-vertical-timeline-component";
+import { FiArrowUpRight } from "react-icons/fi";
 
-import { CTA } from "../components";
+import { CTA, Reveal, AboutScene, SectionHeading, TextReveal, TypeWriter } from "../components";
 import { experiences, skills } from "../constants";
 
 import "react-vertical-timeline-component/style.min.css";
@@ -40,7 +41,7 @@ const aiFocus = [
     description: "Fast prototypes and production-ready apps that combine software engineering with modern AI tools.",
   },
   {
-    title: "ANlabs Product Studio",
+    title: "ANLABS",
     description: "A focused studio for AI automation, SaaS, Android apps, product pages, and launch-ready experiments.",
   },
   {
@@ -77,85 +78,95 @@ const timelineContentStyle = {
   background: "rgba(255, 255, 255, 0.94)",
   border: "1px solid rgba(148, 163, 184, 0.24)",
   borderBottom: "6px solid",
-  borderRadius: "8px",
+  borderRadius: "16px",
   boxShadow: "0 18px 45px rgba(15, 23, 42, 0.08)",
 };
 
 const About = () => {
   return (
-    <section className='max-container bg-white dark:bg-slate-950'>
-      <div className='max-w-3xl'>
-        <p className='font-poppins text-sm font-semibold uppercase tracking-[0.18em] text-primary dark:text-primary-dark'>
-          About
-        </p>
-        <h1 className='head-text mt-3'>
-          Hello, I'm{" "}
-          <span className='blue-gradient_text font-semibold drop-shadow'>
-            Ajinkya Narke
-          </span>
-        </h1>
+    <section className='max-container'>
+      <div className='grid gap-10 md:grid-cols-[1.15fr_0.85fr] md:items-center'>
+        <div>
+          <Reveal>
+            <p className='kicker flex items-center gap-3'>
+              <span className='inline-block h-px w-8 bg-primary dark:bg-primary-dark' />
+              About
+            </p>
+          </Reveal>
+          <h1 className='head-text mt-4'>
+            <TextReveal text="Hello, I'm" />{" "}
+            <TypeWriter text='Ajinkya Narke' gradient delay={0.5} className='font-bold' />
+          </h1>
 
-        <p className='mt-5 text-lg leading-8 text-slate-600 dark:text-slate-300'>
-          Software Engineer and AI Software Builder based in India, specializing
-          in technical education through hands-on learning and building
-          applications. I also build ANlabs, an AI automation, SaaS, and Android
-          product studio where I turn practical ideas into launched digital
-          products. Currently open for full-time opportunities and exciting
-          projects that challenge my skills and allow me to create impactful
-          solutions.
-        </p>
+          <Reveal delay={0.25}>
+            <p className='mt-6 text-lg leading-8 text-slate-600 dark:text-slate-300'>
+              Software Engineer and AI Software Builder based in India, specializing
+              in technical education through hands-on learning and building
+              applications. I also build ANlabs, an AI automation, SaaS, and Android
+              product studio where I turn practical ideas into launched digital
+              products. Currently open for full-time opportunities and exciting
+              projects that challenge my skills and allow me to create impactful
+              solutions.
+            </p>
+          </Reveal>
+        </div>
+
+        <Reveal direction='left' delay={0.15}>
+          <AboutScene />
+        </Reveal>
       </div>
 
-      <section className='mt-16 border-t border-slate-200 pt-10 dark:border-slate-800'>
+      <section className='mt-20'>
         <div className='grid gap-6 md:grid-cols-[1.1fr_0.9fr] md:items-center'>
-          <div>
-            <p className='font-poppins text-sm font-semibold uppercase tracking-[0.18em] text-primary dark:text-primary-dark'>
-              Product studio
-            </p>
-            <h2 className='subhead-text mt-3'>ANlabs</h2>
-            <p className='mt-4 text-slate-600 dark:text-slate-300'>
-              ANlabs is my main product studio for AI automation, SaaS, and
-              Android app experiments. It brings together app launches,
-              automation workflows, product landing pages, and upcoming
-              software ideas under one focused brand.
-            </p>
-          </div>
+          <SectionHeading
+            kicker='Product studio'
+            title='ANLABS'
+            description='ANlabs is my main product studio for AI automation, SaaS, and Android app experiments. It brings together app launches, automation workflows, product landing pages, and upcoming software ideas under one focused brand.'
+          />
 
-          <a
-            href='https://anlabs-dev.vercel.app/'
-            target='_blank'
-            rel='noopener noreferrer'
-            className='group border border-slate-200 bg-slate-50 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 dark:border-slate-800 dark:bg-slate-900'
-          >
-            <span className='font-poppins text-sm font-semibold text-slate-400 dark:text-slate-500'>
-              Website
-            </span>
-            <span className='mt-2 block break-words font-poppins text-xl font-semibold text-slate-900 transition-colors group-hover:text-primary dark:text-slate-100 dark:group-hover:text-primary-dark'>
-              anlabs-dev.vercel.app
-            </span>
-            <span className='mt-3 block text-sm leading-6 text-slate-600 dark:text-slate-300'>
-              Explore the studio, featured apps, AI automation work, and product
-              roadmap.
-            </span>
-          </a>
+          <Reveal delay={0.15}>
+            <a
+              href='https://anlabstudio.com/'
+              target='_blank'
+              rel='noopener noreferrer'
+              className='card-surface card-hover group block p-7'
+            >
+              <div className='flex items-start justify-between'>
+                <span className='font-mono text-[11px] uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500'>
+                  Website
+                </span>
+                <FiArrowUpRight className='h-5 w-5 text-slate-400 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary dark:group-hover:text-primary-dark' />
+              </div>
+              <span className='mt-2 block break-words font-display text-2xl font-bold text-slate-900 transition-colors group-hover:text-primary dark:text-slate-100 dark:group-hover:text-primary-dark'>
+                anlabstudio.com
+              </span>
+              <span className='mt-3 block text-sm leading-6 text-slate-600 dark:text-slate-300'>
+                Explore the studio, featured apps, AI automation work, and product
+                roadmap.
+              </span>
+            </a>
+          </Reveal>
         </div>
       </section>
 
-      <section className='mt-16 border-t border-slate-200 pt-10 dark:border-slate-800'>
+      <section className='mt-20'>
         <div className='flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between'>
-          <h2 className='subhead-text'>My Skills</h2>
-          <span className='font-poppins text-sm font-semibold text-slate-400 dark:text-slate-500'>
-            Practical stack
-          </span>
+          <SectionHeading kicker='Capabilities' title='My Skills' />
+          <Reveal delay={0.2}>
+            <span className='font-mono text-xs uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500'>
+              {skills.length} tools & counting
+            </span>
+          </Reveal>
         </div>
 
-        <div className='mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5'>
-          {skills.map((skill) => (
-            <div
-              className='group border border-slate-200 bg-white p-4 text-center shadow-[0_14px_35px_rgba(15,23,42,0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 dark:border-slate-800 dark:bg-slate-900 dark:shadow-black/20'
+        <div className='mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
+          {skills.map((skill, index) => (
+            <Reveal
+              delay={(index % 5) * 0.06}
+              className='card-surface card-hover group p-4 text-center'
               key={skill.name}
             >
-              <div className='mx-auto flex h-14 w-14 items-center justify-center rounded-[8px] bg-slate-50 dark:bg-slate-800'>
+              <div className='mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-slate-50 transition-transform duration-300 group-hover:scale-110 dark:bg-slate-800'>
                 <img
                   src={skill.imageUrl}
                   alt={skill.name}
@@ -165,28 +176,29 @@ const About = () => {
               <p className='mt-3 text-sm font-semibold text-slate-800 dark:text-slate-200'>
                 {skill.name}
               </p>
-              <p className='mt-1 text-xs text-slate-500 dark:text-slate-400'>
+              <p className='mt-1 font-mono text-[10px] uppercase tracking-[0.12em] text-slate-400 dark:text-slate-500'>
                 {skill.type}
               </p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
-      <section className='mt-16 border-t border-slate-200 pt-10 dark:border-slate-800'>
-        <h2 className='subhead-text'>Tools & Software</h2>
-        <p className='mt-4 max-w-3xl text-slate-600 dark:text-slate-300'>
-          I use a focused set of development, AI, design, and planning tools to
-          move from idea to working product quickly.
-        </p>
+      <section className='mt-20'>
+        <SectionHeading
+          kicker='Workflow'
+          title='Tools & Software'
+          description='I use a focused set of development, AI, design, and planning tools to move from idea to working product quickly.'
+        />
 
-        <div className='mt-8 grid gap-5 md:grid-cols-3'>
-          {toolGroups.map((group) => (
-            <div
+        <div className='mt-10 grid gap-5 md:grid-cols-3'>
+          {toolGroups.map((group, index) => (
+            <Reveal
+              delay={index * 0.08}
               key={group.title}
-              className='border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900'
+              className='card-surface card-hover p-7'
             >
-              <h3 className='font-poppins text-lg font-semibold text-slate-800 dark:text-slate-100'>
+              <h3 className='font-display text-lg font-semibold text-slate-800 dark:text-slate-100'>
                 {group.title}
               </h3>
               <ul className='mt-5 space-y-3'>
@@ -200,41 +212,42 @@ const About = () => {
                   </li>
                 ))}
               </ul>
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
-      <section className='mt-16 border-t border-slate-200 pt-10 dark:border-slate-800'>
-        <h2 className='subhead-text'>AI & Automation Expertise</h2>
-        <p className='mt-4 max-w-3xl text-slate-600 dark:text-slate-300'>
-          I build AI systems around real workflows: retrieval, voice,
-          automation, and app-building support for faster delivery.
-        </p>
+      <section className='mt-20'>
+        <SectionHeading
+          kicker='AI systems'
+          title='AI & Automation Expertise'
+          description='I build AI systems around real workflows: retrieval, voice, automation, and app-building support for faster delivery.'
+        />
 
-        <div className='mt-8 grid gap-5 md:grid-cols-2'>
-          {aiFocus.map((item) => (
-            <div
+        <div className='mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3'>
+          {aiFocus.map((item, index) => (
+            <Reveal
+              delay={(index % 2) * 0.08}
               key={item.title}
-              className='border-l-4 border-primary bg-slate-50 p-6 dark:border-primary-dark dark:bg-slate-900'
+              className='card-surface card-hover border-l-4 !border-l-primary p-7 dark:!border-l-primary-dark'
             >
-              <h3 className='font-poppins text-lg font-semibold text-slate-800 dark:text-slate-100'>
+              <h3 className='font-display text-lg font-semibold text-slate-800 dark:text-slate-100'>
                 {item.title}
               </h3>
               <p className='mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300'>
                 {item.description}
               </p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
-      <section className='mt-16 border-t border-slate-200 pt-10 dark:border-slate-800'>
-        <h2 className='subhead-text'>Work Experience</h2>
-        <p className='mt-4 max-w-3xl text-slate-600 dark:text-slate-300'>
-          I've worked in IT companies and as a freelancer, building practical
-          software and collaborating with teams to ship reliable solutions.
-        </p>
+      <section className='mt-20'>
+        <SectionHeading
+          kicker='Journey'
+          title='Work Experience'
+          description="I've worked in IT companies and as a freelancer, building practical software and collaborating with teams to ship reliable solutions."
+        />
 
         <div className='mt-12'>
           <VerticalTimeline>
@@ -264,7 +277,7 @@ const About = () => {
                 }}
                 className='dark:content-dark'
               >
-                <h3 className='font-poppins text-xl font-semibold text-slate-900 dark:text-slate-100'>
+                <h3 className='font-display text-xl font-semibold text-slate-900 dark:text-slate-100'>
                   {experience.title}
                 </h3>
                 <p className='text-base font-medium text-slate-600 dark:text-slate-300'>
@@ -287,8 +300,8 @@ const About = () => {
         </div>
       </section>
 
-      <section className='mt-16 border-t border-slate-200 pt-10 dark:border-slate-800'>
-        <h2 className='subhead-text'>Education</h2>
+      <section className='mt-20'>
+        <SectionHeading kicker='Foundation' title='Education' />
 
         <div className='mt-12'>
           <VerticalTimeline>
@@ -318,7 +331,7 @@ const About = () => {
                 }}
                 className='dark:content-dark'
               >
-                <h3 className='font-poppins text-xl font-semibold text-slate-900 dark:text-slate-100'>
+                <h3 className='font-display text-xl font-semibold text-slate-900 dark:text-slate-100'>
                   {item.title}
                 </h3>
                 <p className='text-base font-medium text-slate-600 dark:text-slate-300'>
@@ -341,9 +354,7 @@ const About = () => {
         </div>
       </section>
 
-      <div className='mt-12'>
-        <CTA />
-      </div>
+      <CTA />
     </section>
   );
 };

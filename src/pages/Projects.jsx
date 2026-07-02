@@ -1,109 +1,140 @@
-import { CTA } from "../components";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { FiArrowUpRight } from "react-icons/fi";
+import { CTA, Reveal, TextReveal, TiltCard } from "../components";
 import { projects } from "../constants";
-import { arrow } from "../assets/icons";
+
+const categories = ["All", ...new Set(projects.map((p) => p.category))];
 
 const Projects = () => {
-  const projectGroups = projects.reduce((groups, project) => {
-    if (!groups[project.category]) {
-      groups[project.category] = [];
-    }
+  const [activeCategory, setActiveCategory] = useState("All");
 
-    groups[project.category].push(project);
-    return groups;
-  }, {});
+  const visibleProjects =
+    activeCategory === "All"
+      ? projects
+      : projects.filter((p) => p.category === activeCategory);
 
   return (
-    <section className='max-container bg-white dark:bg-slate-950'>
+    <section className='max-container'>
       <div className='max-w-3xl'>
-        <p className='font-poppins text-sm font-semibold uppercase tracking-[0.18em] text-primary dark:text-primary-dark'>
-          Selected work
-        </p>
-        <h1 className='head-text mt-3'>
-          My{" "}
-          <span className='blue-gradient_text drop-shadow font-semibold'>
-            Projects
-          </span>
+        <Reveal>
+          <p className='kicker flex items-center gap-3'>
+            <span className='inline-block h-px w-8 bg-primary dark:bg-primary-dark' />
+            Selected work
+          </p>
+        </Reveal>
+        <h1 className='head-text mt-4'>
+          <TextReveal text='My' />{" "}
+          <TextReveal text='Projects' delay={0.15} gradient className='font-bold' />
         </h1>
 
-        <p className='text-slate-600 dark:text-slate-300 mt-4 leading-relaxed'>
-          A focused mix of Android apps, web projects, and AI automation builds.
-          Each project is organized by the kind of problem it solves so the page
-          feels easier to scan.
-        </p>
+        <Reveal delay={0.25}>
+          <p className='mt-5 leading-relaxed text-slate-600 dark:text-slate-300'>
+            A focused mix of Android apps, web projects, and AI automation builds.
+            Filter by category to see the kind of problems each project solves.
+          </p>
+        </Reveal>
       </div>
 
-      <div className='my-16 space-y-16'>
-        {Object.entries(projectGroups).map(([category, categoryProjects]) => (
-          <section
-            key={category}
-            className='border-t border-slate-200 pt-8 dark:border-slate-800'
-          >
-            <div className='mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between'>
-              <h2 className='subhead-text'>{category}</h2>
-              <span className='font-poppins text-sm font-semibold text-slate-400 dark:text-slate-500'>
-                {String(categoryProjects.length).padStart(2, "0")} builds
+      {/* category filter pills */}
+      <Reveal delay={0.3} className='mt-10 flex flex-wrap gap-2.5'>
+        {categories.map((category) => {
+          const isActive = category === activeCategory;
+          const count =
+            category === "All"
+              ? projects.length
+              : projects.filter((p) => p.category === category).length;
+
+          return (
+            <button
+              key={category}
+              onClick={() => setActiveCategory(category)}
+              className={`relative rounded-full px-4 py-2 font-display text-sm font-medium transition-colors ${
+                isActive
+                  ? "text-white"
+                  : "border border-slate-200 text-slate-600 hover:border-primary/50 hover:text-primary dark:border-slate-800 dark:text-slate-300 dark:hover:border-primary-dark/50 dark:hover:text-primary-dark"
+              }`}
+            >
+              {isActive && (
+                <motion.span
+                  layoutId='filter-pill'
+                  className='absolute inset-0 rounded-full bg-gradient-to-r from-primary to-secondary'
+                  transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                />
+              )}
+              <span className='relative'>
+                {category}
+                <span className={`ml-2 font-mono text-[11px] ${isActive ? "text-white/80" : "text-slate-400 dark:text-slate-500"}`}>
+                  {String(count).padStart(2, "0")}
+                </span>
               </span>
-            </div>
+            </button>
+          );
+        })}
+      </Reveal>
 
-            <div className='grid gap-6 md:grid-cols-2'>
-              {categoryProjects.map((project) => (
-                <article
-                  className='group w-full max-w-full border border-slate-200 bg-white p-5 shadow-[0_18px_45px_rgba(15,23,42,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 dark:border-slate-800 dark:bg-slate-900 dark:shadow-black/20 sm:p-6'
-                  key={project.name}
-                >
-                  <div className='flex min-w-0 flex-col gap-5 sm:flex-row sm:items-start'>
-                    <div className='block-container h-12 w-12 shrink-0'>
-                      <div className={`btn-back rounded-[8px] ${project.theme}`} />
-                      <div className='btn-front flex items-center justify-center rounded-[8px] bg-white dark:bg-slate-800'>
-                        <img
-                          src={project.iconUrl}
-                          alt=''
-                          className='h-1/2 w-1/2 object-contain'
-                        />
+      {/* animated project grid */}
+      <motion.div layout className='my-14 grid gap-6 md:grid-cols-2 xl:grid-cols-3'>
+        <AnimatePresence mode='popLayout'>
+          {visibleProjects.map((project) => (
+            <motion.div
+              layout
+              key={project.name}
+              initial={{ opacity: 0, scale: 0.92, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.92, y: -10 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <TiltCard className='h-full'>
+                <article className='card-surface card-hover group flex h-full flex-col justify-between p-6'>
+                  <div>
+                    <div className='flex items-start justify-between gap-4'>
+                      <div className='block-container h-12 w-12 shrink-0'>
+                        <div className={`btn-back rounded-[10px] ${project.theme}`} />
+                        <div className='btn-front flex items-center justify-center rounded-[10px] bg-white dark:bg-slate-800'>
+                          <img
+                            src={project.iconUrl}
+                            alt=''
+                            className='h-1/2 w-1/2 object-contain'
+                          />
+                        </div>
                       </div>
+                      <span className='rounded-full border border-slate-200 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-slate-500 dark:border-slate-700 dark:text-slate-400'>
+                        {project.category}
+                      </span>
                     </div>
 
-                    <div className='min-w-0 max-w-full'>
-                      <h3 className='font-poppins text-xl font-semibold text-text-light dark:text-text-dark'>
-                        {project.name}
-                      </h3>
-                      <p className='mt-3 break-words text-sm leading-6 text-slate-500 dark:text-slate-400'>
-                        {project.description}
-                      </p>
-                    </div>
+                    <h3 className='mt-6 font-display text-xl font-semibold text-text-light dark:text-text-dark'>
+                      {project.name}
+                    </h3>
+                    <p className='mt-3 break-words text-sm leading-6 text-slate-500 dark:text-slate-400'>
+                      {project.description}
+                    </p>
                   </div>
 
-                  <div className='mt-6 flex items-center gap-2 font-poppins text-sm'>
+                  <div className='mt-6 flex items-center gap-2 font-display text-sm'>
                     {!project.link ? (
                       <span className='font-semibold text-slate-400 dark:text-slate-500'>
                         Case study soon
                       </span>
                     ) : (
-                      <>
-                        <a
-                          href={project.link}
-                          target='_blank'
-                          rel='noopener noreferrer'
-                          className='font-semibold text-primary transition-opacity hover:opacity-80 dark:text-primary-dark'
-                        >
-                          Open project
-                        </a>
-                        <img
-                          src={arrow}
-                          alt=''
-                          className='h-4 w-4 object-contain transition-transform group-hover:translate-x-1'
-                        />
-                      </>
+                      <a
+                        href={project.link}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        className='inline-flex items-center gap-1.5 font-semibold text-primary transition-opacity hover:opacity-80 dark:text-primary-dark'
+                      >
+                        Open project
+                        <FiArrowUpRight className='h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5' />
+                      </a>
                     )}
                   </div>
                 </article>
-              ))}
-            </div>
-          </section>
-        ))}
-      </div>
-
-      <hr className='border-slate-200 dark:border-slate-700' />
+              </TiltCard>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </motion.div>
 
       <CTA />
     </section>

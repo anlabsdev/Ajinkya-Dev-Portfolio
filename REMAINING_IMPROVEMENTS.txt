@@ -1,0 +1,101 @@
+REMAINING IMPROVEMENTS — Ajinkya Narke Portfolio
+Last updated: 2026-07-02
+
+Everything below is NOT done yet. Fixed in this session (for context, see
+git diff / commit history): MusicSwitch positioning + audio preload +
+icon/aria-labels, 404 page, global focus-visible ring, missing ANLABS
+projects synced in, SubReminder link fixed to subreminderpro.com.
+
+────────────────────────────────────────────────────────────────────
+1. 3D MODEL FILE SIZE (attempted, reverted — needs your call)
+────────────────────────────────────────────────────────────────────
+The 3D models are the single biggest thing hurting load time:
+
+  bird.glb                              1.6 MB
+  plane.glb                             1.5 MB
+  island.glb                            352 KB
+  sky.glb                               324 KB   (all 4 load on Home)
+  low_poly_man_working_at_a_table.glb   1.4 MB   (Contact page)
+  robot_hip_hop_dancing.glb             4.5 MB   (Chatbot page)
+  deadpool_dancing.glb                  7.6 MB   (Thank-you page)
+
+I ran `@gltf-transform/cli optimize --compress meshopt` on all seven.
+Six shrank dramatically (bird -50%, deadpool -51%, low_poly_man -78%,
+sky -80%, plane -34%); robot_hip_hop_dancing.glb actually grew and
+should stay excluded. The compressed files passed structural validation
+(gltf-transform validate: no errors), and your `useGLTF` calls already
+auto-configure both Draco and Meshopt decoders (three-stdlib), so they
+should Just Work in any real browser.
+
+I could NOT verify this visually — the only headless browser available
+in this environment crashed (renderer access violation) specifically
+when loading the meshopt-compressed geometry under software rendering,
+while the same page with the original files rendered fine. That's most
+likely a sandbox/SwiftShader limitation, not a real browser issue, but
+I won't ship an unverified change to the site's signature 3D hero.
+
+To do this safely:
+  1. Run: npx @gltf-transform/cli optimize <input> <output> --compress meshopt
+     on each file above (skip robot_hip_hop_dancing.glb).
+  2. Replace the files in src/assets/3d/.
+  3. Run `npm run dev`, open the site in an actual browser (Chrome/Edge,
+     not headless), and check: Home hero (bird/plane/island/sky spin
+     and drag correctly), Contact page (low_poly_man walks/idles), and
+     ThankYou page (deadpool dances) — all after form submit.
+  4. If everything looks right, commit. If anything looks broken/missing,
+     revert that one file only.
+
+Potential savings if it works out: roughly 6-7 MB off total asset
+weight, cutting Home page's critical model payload by ~40%.
+
+────────────────────────────────────────────────────────────────────
+2. NO RESUME / CV DOWNLOAD
+────────────────────────────────────────────────────────────────────
+Contact and About have no one-click resume download. Recruiters expect
+this. Needs: an actual PDF from you, then a download link/button (About
+page hero or Contact page would be natural spots).
+
+────────────────────────────────────────────────────────────────────
+3. NO WRITTEN CASE STUDIES
+────────────────────────────────────────────────────────────────────
+Every project either links out or says "Case study soon" — none has a
+problem → approach → result writeup. Even 2-3 short case studies for
+your strongest projects (SubReminder, ANLABS, or one AI automation
+build) would do more for credibility than the whole rest of this list
+combined. Needs real content from you (what was the problem, what did
+you build, what changed) — I can't fabricate this.
+
+────────────────────────────────────────────────────────────────────
+4. NO SOCIAL PROOF
+────────────────────────────────────────────────────────────────────
+No testimonials, client quotes, usage numbers, or GitHub stars. If you
+have any freelance client feedback, Play Store ratings, or usage stats
+for SubReminder/TripTally/etc., a small testimonials or "by the numbers"
+section would help a lot. Needs real data from you.
+
+────────────────────────────────────────────────────────────────────
+5. SEO / METADATA POLISH
+────────────────────────────────────────────────────────────────────
+index.html has decent basics (title, description, og:image, theme
+color) but:
+  - No JSON-LD structured data (Person / WebSite schema) — helps Google
+    show a richer result for your name.
+  - Same <title>/description on every route (React Router doesn't
+    update document.title per page) — worth adding per-page titles at
+    minimum for About/Projects/Contact.
+  - No sitemap.xml or robots.txt in /public.
+
+────────────────────────────────────────────────────────────────────
+6. ANALYTICS
+────────────────────────────────────────────────────────────────────
+No way to know which projects people click, whether Contact form
+submissions convert, or where visitors drop off. Worth adding a
+privacy-friendly analytics tool (Plausible, Vercel Analytics, or GA4)
+if you want that visibility.
+
+────────────────────────────────────────────────────────────────────
+Not on this list because they turned out fine / not needed:
+────────────────────────────────────────────────────────────────────
+  - Decorative image alt="" usage (icons next to visible text labels)
+    — this is correct accessibility practice, not a bug.
+  - Focus-visible states — now fixed globally (see index.css).

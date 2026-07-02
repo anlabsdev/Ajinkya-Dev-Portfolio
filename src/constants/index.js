@@ -187,7 +187,7 @@ export const projects = [
         theme: 'btn-back-green',
         name: 'Subreminder App',
         description: 'Android subscription reminder app for tracking recurring payments, renewal dates, and spending summaries.',
-        link: 'https://subreminder-website.vercel.app/',
+        link: 'https://subreminderpro.com/',
     },
     {
         category: 'Android Apps',
@@ -203,7 +203,7 @@ export const projects = [
         theme: 'btn-back-pink',
         name: 'Woodify Icon App',
         description: 'Custom Android icon pack with a warm wood-inspired visual style for personalized home screens.',
-        link: 'https://anlabs-dev.vercel.app/apps/woodfy-icon-pack',
+        link: 'https://anlabstudio.com/apps/woodfy-icon-pack',
     },
     {
         category: 'Android Apps',
@@ -211,7 +211,7 @@ export const projects = [
         theme: 'btn-back-orange',
         name: 'Luma Walls App',
         description: 'A curated premium wallpaper app for Android featuring sharp visual assets, custom theme collections, and seamless personalization options.',
-        link: 'https://anlabs-dev.vercel.app/apps/luma-walls',
+        link: 'https://anlabstudio.com/apps/luma-walls',
     },
     {
         category: 'Android Apps',
@@ -230,12 +230,20 @@ export const projects = [
         link: '',
     },
     {
-        category: 'Product Studio',
+        category: 'Android Apps',
+        iconUrl: car,
+        theme: 'btn-back-blue',
+        name: 'AquaCare',
+        description: 'Hydration reminder and water intake tracker that helps build a consistent daily drinking habit.',
+        link: '',
+    },
+    {
+        category: 'ANLABS',
         iconUrl: estate,
         theme: 'btn-back-yellow',
         name: 'ANlabs',
         description: 'AI automation, SaaS, and Android product studio website showcasing launched apps, automation workflows, upcoming products, and Ajinkya\'s builder profile.',
-        link: 'https://anlabs-dev.vercel.app/',
+        link: 'https://anlabstudio.com/',
     },
     {
         category: 'Web Projects',
@@ -251,7 +259,7 @@ export const projects = [
         theme: 'btn-back-red',
         name: 'Subreminder Web App',
         description: 'Web experience for Subreminder with product pages, download routing, and app feature previews.',
-        link: 'https://subreminder-website.vercel.app/',
+        link: 'https://subreminderpro.com/',
     },
     {
         category: 'Web Projects',
@@ -260,6 +268,22 @@ export const projects = [
         name: 'Best of Movies',
         description: 'A curated movie recommendation and discovery platform featuring advanced search, genre filters, and rating trends.',
         link: '',
+    },
+    {
+        category: 'Web Projects',
+        iconUrl: threads,
+        theme: 'btn-back-purple',
+        name: 'PromptsForLLMs',
+        description: 'Curated library of prompts for large language models, organized for fast discovery and reuse.',
+        link: 'https://promptsforllms.com/',
+    },
+    {
+        category: 'Web Projects',
+        iconUrl: summiz,
+        theme: 'btn-back-orange',
+        name: 'SkillsForLLMs',
+        description: 'Capability frameworks and skill maps for LLMs, helping teams understand what modern models can actually do.',
+        link: 'https://skillsforllms.com/',
     },
     {
         category: 'AI Automation',

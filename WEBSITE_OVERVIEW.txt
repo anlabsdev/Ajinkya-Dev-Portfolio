@@ -1,0 +1,197 @@
+================================================================================
+AJINKYA NARKE PORTFOLIO -- WEBSITE OVERVIEW & VISUAL AUDIT
+Generated: 2026-06-25
+================================================================================
+
+--------------------------------------------------------------------------------
+1. WHAT THIS SITE IS
+--------------------------------------------------------------------------------
+A personal portfolio + product-studio showcase for Ajinkya Narke (Software
+Engineer / AI Software Builder). Built as a React SPA with a 3D-animated
+homepage (drag-to-rotate island scene), and content pages for projects,
+the ANlabs studio, certifications, an AI chatbot demo, and contact/connect
+forms.
+
+--------------------------------------------------------------------------------
+2. TECH STACK
+--------------------------------------------------------------------------------
+- React 18 + Vite 4 (dev server on :5173)
+- React Router DOM v6 (route-based code splitting via React.lazy)
+- Tailwind CSS (darkMode: 'class', custom primary/secondary palette)
+- Three.js + @react-three/fiber + @react-three/drei (3D scenes)
+- Framer Motion (page transitions, scroll reveals, nav menu)
+- styled-components, react-icons, react-vertical-timeline-component
+- EmailJS (contact form), react-error-boundary (WebGL fallback safety)
+- Deployed on Vercel (vercel.json present)
+
+--------------------------------------------------------------------------------
+3. SITE STRUCTURE / ROUTES
+--------------------------------------------------------------------------------
+/                 Home        - full-screen 3D island scene (drag to rotate),
+                                stage-based info card, music toggle
+/about            About       - bio, ANlabs studio link, skills grid (18),
+                                tools/software, AI focus areas, work
+                                experience + education timelines (NEW: 3D
+                                "low-poly man at laptop" card in the hero)
+/projects         Projects    - ~20 projects grouped into 5 categories:
+                                Android Apps, Product Studio, Web Projects,
+                                AI Automation, Data Analytics
+/studio           Studio      - ANlabs studio landing: stats, workflow
+                                ("Map -> Prototype -> Polish"), product cards
+/certification    Certifications - 6 certificate cards (AWS, Azure, ML,
+                                Python/Django, etc.)
+/chatbot          Chatbot     - AI chat agent UI with a dancing-robot 3D
+                                sidebar model
+/connect          Connect     - contact-method cards (GitHub, LinkedIn,
+                                Medium, LeetCode, WhatsApp, Email) + profile
+                                card graphic
+/contact          Contact     - EmailJS contact form + 3D "man at laptop"
+                                model with reactive animations (typing/idle)
+/thank-you        ThankYou    - post-submit confirmation w/ dancing Deadpool
+                                3D model
+
+All non-home routes share a common Footer; Home does not show the Footer.
+
+--------------------------------------------------------------------------------
+4. RECENT CHANGES MADE THIS SESSION
+--------------------------------------------------------------------------------
+a) Reveal-on-scroll (src/components/Reveal.jsx)
+   Wraps section content in a Framer Motion fade/slide-up that triggers via
+   whileInView. Applied across About/Projects/etc. section blocks.
+
+b) Scroll progress bar (src/components/ScrollProgress.jsx)
+   Fixed 3px gradient bar at the very top of the viewport (z-110), filling
+   left-to-right based on page scroll position. Mounted globally in
+   App.jsx so it shows on every route.
+
+c) About-page 3D moment (src/components/AboutScene.jsx)
+   A contained 260/320/380px-tall card reusing the existing "low poly man
+   working at a table with a laptop" model (already used on /contact, so
+   the browser reuses the cached .glb instead of fetching a new asset).
+   Wrapped in drei's PresentationControls for a subtle, limited-range
+   tilt-on-drag interaction (not a full 360 spin -- kept restrained to
+   match the site's professional tone). Includes an "Open to work" pill
+   badge tying back to the About copy.
+
+d) Page transition (src/App.jsx)
+   Flattened the previous nested <Routes> structure into one flat,
+   location-keyed <Routes> wrapped in AnimatePresence. Every route change
+   now does a ~220ms fade + 14px vertical slide instead of an instant
+   swap. Footer is rendered outside the animated wrapper (shown on every
+   route except Home).
+
+--------------------------------------------------------------------------------
+5. 3D ASSET INVENTORY (src/assets/3d/*.glb)
+--------------------------------------------------------------------------------
+USED:
+  low_poly_man_working_at_a_table_with_a_laptop.glb   1.4 MB  -> About, Contact
+  robot_hip_hop_dancing.glb                           4.6 MB  -> Chatbot
+  deadpool_dancing.glb                                7.9 MB  -> ThankYou
+  bird.glb                                            1.6 MB  -> Home
+  island.glb                                          0.35 MB -> Home
+  plane.glb                                           1.4 MB  -> Home
+  sky.glb                                             0.33 MB -> Home
+
+UNUSED / DEAD WEIGHT (no .jsx component references them anywhere in src):
+  stylized_air_fighters_animated.glb                  79.5 MB  <-- largest by far
+  bear_balloon_spaceship.glb                          18.4 MB
+  flying_icarus_-_animated.glb                        15.2 MB (has a .jsx
+                                                         wrapper, but nothing
+                                                         imports it)
+  medieval_fantasy_tavern.glb                          7.8 MB
+  pegasus.glb                                          6.9 MB
+  dragon_flying_cycle.glb                              2.3 MB
+
+  Total unused: ~130 MB sitting in the repo. Vite won't bundle files that
+  are never imported, so this doesn't bloat the shipped site -- but it
+  does bloat git clones/CI checkouts. Worth deleting or moving out of the
+  repo unless they're earmarked for a near-term feature.
+
+--------------------------------------------------------------------------------
+6. PRODUCTION BUILD SIZES (vite build, current state)
+--------------------------------------------------------------------------------
+Largest JS chunks (gzipped):
+  three-vendor       927.9 KB  (251.8 KB gz)  -- Three.js + fiber + drei
+  react-vendor       162.6 KB  (52.8 KB gz)
+  framer-motion      123.2 KB  (40.0 KB gz)
+  Contact page        27.1 KB  (8.0 KB gz)
+  About page          19.9 KB  (6.6 KB gz)
+  Studio page          16.7 KB (4.7 KB gz)
+
+Each route is its own lazy chunk, so first load of any single page doesn't
+pull in every page's code -- only the shared vendor chunks plus that page's
+chunk. The three-vendor chunk is unavoidable on every page that uses a
+Canvas (Home, About, Contact, Chatbot, ThankYou) but isn't loaded by pages
+that don't (Projects, Studio, Certification, Connect).
+
+--------------------------------------------------------------------------------
+7. VISUAL AUDIT -- ISSUES FOUND (via real headless-browser screenshots)
+--------------------------------------------------------------------------------
+Reviewed at 1440px desktop width across Home, About, Projects, Studio,
+Certification, Connect, Contact.
+
+[HIGH] Contact page 3D model panel renders badly oversized
+  File: src/pages/Contact.jsx (~line 155)
+  The model card wrapper is `lg:h-auto` inside a `min-h-screen` flex row
+  with default `align-items: stretch`. At the `lg` breakpoint this makes
+  the 3D panel stretch to the FULL section height (which is >= 100vh)
+  instead of staying a contained card like it is on mobile/tablet
+  (h-[260px]/[360px]/[460px]). The result: the laptop/face/desk model
+  renders zoomed-in and oddly cropped, with a large dead/blank brown
+  "desk" area filling the rest of the panel. This is a real, reproducible
+  bug at any normal desktop window height, not just a screenshot artifact.
+  FIX: replace `lg:h-auto` with a fixed cap (e.g. `lg:h-[520px]`) or add
+  `lg:self-start` / `lg:items-start` on the parent flex container so the
+  panel stops stretching to match section height.
+
+[MEDIUM] Home page navbar contrast against the sky scene
+  File: src/components/Navbar.jsx + src/pages/Home.jsx
+  The desktop nav links use light/white-ish text with no backdrop, sitting
+  directly over the Home page's bright light-blue-and-white-cloud 3D sky.
+  Links like "Studio" visually blend into passing white cloud shapes,
+  hurting legibility right at the most important first-impression page.
+  FIX: add a subtle scrim behind the header on Home only (e.g. a
+  bg-gradient-to-b from-black/20 strip behind the nav row), or switch nav
+  text to a darker/higher-contrast color specifically on the home route.
+
+[LOW] Studio/Certification/Connect pages have a lot of unstyled dead space
+  This was partly a screenshot-height artifact, but worth a real look --
+  Studio and Certification end fairly early on a real screen vs. Home/About
+  which are denser. Not a bug, but a chance to add a closing section (e.g.
+  a "what I'm building next" teaser or testimonials) on Studio/Certification
+  so the page doesn't feel like it runs out of content early on tall
+  monitors.
+
+[NOTE] Dark mode is the default on first visit for most users
+  ThemeContext defaults to the OS's prefers-color-scheme. Most of this
+  audit was captured in dark mode as a result. Worth doing a dedicated
+  pass in LIGHT mode too to confirm contrast/shadows hold up there (the
+  card shadow values like `shadow-[0_18px_45px_rgba(15,23,42,0.06)]` were
+  clearly tuned for light backgrounds and may look flat in dark mode).
+
+--------------------------------------------------------------------------------
+8. WHAT'S ALREADY WORKING WELL
+--------------------------------------------------------------------------------
+- Home page 3D island scene renders cleanly with bird, biplane, and house
+  all composited correctly; drag-to-rotate works.
+- About page's new 3D laptop-working card renders correctly contained
+  (unlike Contact's bug above) with the "Open to work" badge legible.
+- Projects page's 5-category grouping with icon-badge cards is clean and
+  scans well; "Open project" vs "Case study soon" states both read clearly.
+- Studio page's stat counters, 3-step workflow, and product cards (Live /
+  Coming Soon tags) are well organized.
+- Scroll-reveal animations and the new top-of-page scroll progress bar both
+  fire/track correctly across routes.
+- Page transition (fade + slide) applies uniformly without breaking lazy
+  loading or the Footer's conditional Home/non-Home visibility.
+
+--------------------------------------------------------------------------------
+9. SUGGESTED NEXT STEPS (priority order)
+--------------------------------------------------------------------------------
+1. Fix the Contact page 3D panel sizing bug (high-visibility, easy fix).
+2. Add a scrim/contrast fix for the Home navbar over the sky scene.
+3. Delete or relocate the ~130 MB of unused .glb assets out of the repo.
+4. Do a light-mode pass through every page to sanity-check shadows/contrast.
+5. Consider a closing section for Studio/Certification to fill out the
+   page on larger screens.
+================================================================================

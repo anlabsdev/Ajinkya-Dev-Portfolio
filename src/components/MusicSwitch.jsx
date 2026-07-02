@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
+import { FiChevronDown } from "react-icons/fi";
 import { soundoff, soundon } from "../assets/icons";
 
 // Import audio tracks
@@ -41,12 +42,12 @@ const MusicSwitch = ({ isPlaying, onToggle }) => {
     audio.addEventListener('error', handleError);
     audio.addEventListener('canplay', handleCanPlay);
 
-    // Load the first track
-    if (!audio.src) {
-      audio.src = tracks[0].file;
-    }
-
     if (isPlaying) {
+      // Only fetch the audio file once the user actually presses play,
+      // instead of preloading ~5MB on every Home page visit.
+      if (!audio.src) {
+        audio.src = tracks[0].file;
+      }
       setIsLoading(true);
       audio.play().catch(err => {
         console.error('Playback failed:', err);
@@ -114,7 +115,7 @@ const MusicSwitch = ({ isPlaying, onToggle }) => {
 
   return (
     <motion.div
-      className="fixed bottom-8 left-8 z-50"
+      className="absolute bottom-6 left-6 z-30 sm:bottom-8 sm:left-8"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
@@ -138,12 +139,14 @@ const MusicSwitch = ({ isPlaying, onToggle }) => {
             onClick={() => setShowTrackList(!showTrackList)}
             className="relative p-2 bg-white/10 dark:bg-black/20 backdrop-blur-[2px] rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
             whileTap={{ scale: 0.95 }}
+            aria-label={showTrackList ? "Hide track list" : "Show track list"}
+            aria-expanded={showTrackList}
           >
             <motion.div
               className="w-6 h-6 text-white flex items-center justify-center"
               animate={{ rotate: showTrackList ? 180 : 0 }}
             >
-              ▼
+              <FiChevronDown className="h-4 w-4" />
             </motion.div>
           </motion.button>
           <motion.button
@@ -151,6 +154,7 @@ const MusicSwitch = ({ isPlaying, onToggle }) => {
             className="relative p-4 bg-white/10 dark:bg-black/20 backdrop-blur-[2px] rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
             whileTap={{ scale: 0.95 }}
             disabled={isLoading}
+            aria-label={isPlaying ? "Pause background music" : "Play background music"}
           >
             {isLoading ? (
               <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin" />

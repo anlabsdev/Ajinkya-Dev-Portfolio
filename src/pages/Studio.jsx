@@ -33,7 +33,16 @@ const pillars = [
           "Track renewal dates, upcoming payments, and monthly subscription spending in one simple Android app.",
         status: "live",
         tags: ["Subscriptions", "Reminders", "Budget"],
-        link: "https://subreminder-website.vercel.app/",
+        link: "https://subreminderpro.com/",
+      },
+      {
+        name: "AquaCare",
+        tagline: "Hydration reminders that actually stick",
+        description:
+          "Tracks daily water intake and sends smart reminders to build a consistent hydration habit.",
+        status: "live",
+        tags: ["Health", "Reminders", "Habit"],
+        link: "",
       },
       {
         name: "Trip Tally",
@@ -51,7 +60,7 @@ const pillars = [
           "A custom Android icon pack with a warm wood-inspired visual style for personalized home screens.",
         status: "live",
         tags: ["Personalization", "Icons", "Design"],
-        link: "https://anlabs-dev.vercel.app/apps/woodfy-icon-pack",
+        link: "https://anlabstudio.com/apps/woodfy-icon-pack",
       },
       {
         name: "Luma Walls",
@@ -60,6 +69,24 @@ const pillars = [
           "A curated wallpaper app built for sharp visuals, clean browsing, and expressive phone personalization.",
         status: "soon",
         tags: ["Wallpapers", "Personalization"],
+        link: "",
+      },
+      {
+        name: "SubReminder for iOS",
+        tagline: "The subscription tracker, now on iPhone",
+        description:
+          "Bringing SubReminder's renewal tracking and spend summaries to iOS with a native feel.",
+        status: "soon",
+        tags: ["iOS", "Subscriptions"],
+        link: "",
+      },
+      {
+        name: "Luma Walls for iOS",
+        tagline: "Curated wallpapers with Dynamic Island support",
+        description:
+          "An iOS version of Luma Walls built around Dynamic Island and the latest iPhone display features.",
+        status: "soon",
+        tags: ["iOS", "Wallpapers"],
         link: "",
       },
     ],
@@ -81,7 +108,7 @@ const pillars = [
           "A dedicated automation hub for AI agents, business workflows, LLM tools, and repeatable automation systems.",
         status: "live",
         tags: ["Agents", "Workflows", "LLM"],
-        link: "https://anlabs-dev.vercel.app/apps/automata-ai",
+        link: "https://anlabstudio.com/apps/automata-ai",
       },
       {
         name: "Personalised RAG",
@@ -110,6 +137,33 @@ const pillars = [
         tags: ["Social Media", "Content AI", "Scheduling"],
         link: "",
       },
+      {
+        name: "Everything AI",
+        tagline: "All-in-one AI assistant for everyday workflows",
+        description:
+          "A unified AI workspace bringing chat, automation, and productivity tools together in one place for daily work.",
+        status: "building",
+        tags: ["AI Assistant", "Productivity", "SaaS"],
+        link: "",
+      },
+      {
+        name: "Ghostmeetings AI",
+        tagline: "Invisible AI notetaker for every call",
+        description:
+          "AI meeting assistant that joins calls silently, captures notes, and turns conversations into action items.",
+        status: "building",
+        tags: ["Meetings", "Transcription", "SaaS"],
+        link: "",
+      },
+      {
+        name: "Resume Roster AI",
+        tagline: "AI-powered resume screening & candidate roster",
+        description:
+          "Screens resumes, ranks candidates, and keeps a smart hiring roster so recruiters spend less time sorting applications.",
+        status: "building",
+        tags: ["Hiring", "Resume Screening", "SaaS"],
+        link: "",
+      },
     ],
   },
   {
@@ -129,7 +183,25 @@ const pillars = [
           "Web experience for SubReminder with product pages, download routing, and app feature previews.",
         status: "live",
         tags: ["Product Page", "Marketing", "Web"],
-        link: "https://subreminder-website.vercel.app/",
+        link: "https://subreminderpro.com/",
+      },
+      {
+        name: "PromptsForLLMs",
+        tagline: "A curated prompt library for LLMs",
+        description:
+          "Browse and reuse a curated library of prompts for large language models, organized for fast discovery.",
+        status: "live",
+        tags: ["Prompts", "LLM", "Library"],
+        link: "https://promptsforllms.com/",
+      },
+      {
+        name: "SkillsForLLMs",
+        tagline: "Capability frameworks & skill maps for LLMs",
+        description:
+          "Skill maps and capability frameworks that help teams understand what modern language models can actually do.",
+        status: "building",
+        tags: ["LLM", "Frameworks", "Research"],
+        link: "https://skillsforllms.com/",
       },
       {
         name: "Toothsi Dental Clinic",
@@ -147,17 +219,17 @@ const pillars = [
           "AI automation, SaaS, and Android product studio website showcasing launched apps and Ajinkya's builder profile.",
         status: "live",
         tags: ["Studio", "Portfolio", "Hub"],
-        link: "https://anlabs-dev.vercel.app/",
+        link: "https://anlabstudio.com/",
       },
     ],
   },
 ];
 
 const stats = [
-  { value: "09", label: "Products mapped", icon: FiLayers },
-  { value: "04", label: "Android apps", icon: FiSmartphone },
-  { value: "04", label: "AI Automations", icon: FiCpu },
-  { value: "03", label: "Web products", icon: FiGlobe },
+  { value: "19", label: "Products mapped", icon: FiLayers },
+  { value: "07", label: "Android apps", icon: FiSmartphone },
+  { value: "07", label: "AI Automations", icon: FiCpu },
+  { value: "05", label: "Web products", icon: FiGlobe },
 ];
 
 /* ──────────────────────────────────────────────
@@ -339,7 +411,7 @@ const Studio = () => {
 
           <div className="mt-6 flex flex-wrap gap-3">
             <a
-              href="https://anlabs-dev.vercel.app/"
+              href="https://anlabstudio.com/"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-slate-900 to-slate-700 px-5 py-2.5 text-sm font-semibold text-white shadow-lg transition-all duration-200 hover:shadow-xl dark:from-slate-100 dark:to-slate-300 dark:text-slate-900"
@@ -434,7 +506,7 @@ const Studio = () => {
             </div>
 
             {/* Product grid */}
-            <div className="grid gap-5 sm:grid-cols-2">
+            <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
               {currentPillar.products.map((product, i) => (
                 <ProductCard key={product.name} product={product} index={i} />
               ))}
@@ -545,7 +617,7 @@ const Studio = () => {
                 <FiArrowRight className="h-4 w-4" />
               </Link>
               <a
-                href="https://anlabs-dev.vercel.app/"
+                href="https://anlabstudio.com/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-xl border border-slate-600 px-6 py-3 text-sm font-semibold text-slate-300 transition-all duration-200 hover:border-slate-500 hover:text-white"

@@ -9,7 +9,7 @@ import { RobotHipHopDancing } from "../models/robot_hip_hop_dancing";
 import { canCreateWebGLContext } from "../utils/webgl";
 
 const ModelFallback = () => (
-  <div className='flex h-full items-center justify-center bg-slate-900 rounded-[8px]' />
+  <div className='flex h-full items-center justify-center bg-slate-100 dark:bg-slate-900 rounded-[8px]' />
 );
 
 const knowledgeBase = {
@@ -40,7 +40,7 @@ const knowledgeBase = {
   },
   projects: [
     "Android Apps: Subreminder App, Trip Tally App, Woodify Icon App",
-    "Product Studio: ANlabs (https://anlabs-dev.vercel.app/)",
+    "ANLABS: AI automation, SaaS, and Android product studio (https://anlabstudio.com/)",
     "Web Projects: Toothsi Dental Clinic, Subreminder Web App",
     "AI Automation: Personalised RAG, Voice Agent, Social Media AI Manager",
   ],
@@ -143,24 +143,24 @@ const Chatbot = () => {
   };
 
   return (
-    <section className='min-h-screen bg-slate-950 px-4 pb-8 pt-[92px] text-slate-100 sm:px-6 lg:px-8'>
+    <section className='min-h-screen bg-white dark:bg-slate-950 px-4 pb-8 pt-[92px] text-slate-900 dark:text-slate-100 sm:px-6 lg:px-8'>
       <div className='mx-auto grid max-w-6xl gap-6 lg:grid-cols-[minmax(0,1fr)_360px]'>
-        <div className='flex min-h-[calc(100vh-132px)] min-w-0 flex-col overflow-hidden border border-slate-800 bg-slate-900 shadow-[0_24px_70px_rgba(0,0,0,0.32)]'>
-          <header className='relative border-b border-slate-800 bg-slate-900 px-4 py-5 sm:px-6'>
+        <div className='flex min-h-[calc(100vh-132px)] min-w-0 flex-col overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-[0_24px_70px_rgba(15,23,42,0.08)] dark:shadow-[0_24px_70px_rgba(0,0,0,0.32)]'>
+          <header className='relative border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-5 sm:px-6'>
             <button
               type='button'
               onClick={() => window.history.back()}
-              className='absolute left-4 top-5 flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-blue-300 transition-colors hover:bg-slate-700'
+              className='absolute left-4 top-5 flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-blue-600 dark:text-blue-300 transition-colors hover:bg-slate-200 dark:hover:bg-slate-700'
               aria-label='Go back'
             >
               <BsArrowLeft />
             </button>
 
             <div className='mx-12 text-center'>
-              <h1 className='font-poppins text-xl font-semibold text-slate-50 sm:text-2xl'>
+              <h1 className='font-poppins text-xl font-semibold text-slate-900 dark:text-slate-50 sm:text-2xl'>
                 Ajinkya's AI Assistant
               </h1>
-              <p className='mt-1 text-sm text-slate-400'>
+              <p className='mt-1 text-sm text-slate-500 dark:text-slate-400'>
                 Portfolio answers, fast and focused.
               </p>
             </div>
@@ -168,7 +168,7 @@ const Chatbot = () => {
             <button
               type='button'
               onClick={() => setIsMinimized((current) => !current)}
-              className='absolute right-4 top-5 flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-blue-300 transition-colors hover:bg-slate-700'
+              className='absolute right-4 top-5 flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-blue-600 dark:text-blue-300 transition-colors hover:bg-slate-200 dark:hover:bg-slate-700'
               aria-label={isMinimized ? "Expand chat" : "Minimize chat"}
             >
               {isMinimized ? <FiMaximize2 /> : <FiMinimize2 />}
@@ -177,13 +177,13 @@ const Chatbot = () => {
 
           {!isMinimized && (
             <>
-              <div className='flex flex-wrap gap-2 border-b border-slate-800 bg-slate-950/50 px-4 py-3 sm:px-6'>
+              <div className='flex flex-wrap gap-2 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/50 px-4 py-3 sm:px-6'>
                 {quickPrompts.map((prompt) => (
                   <button
                     type='button'
                     key={prompt}
                     onClick={() => sendMessage(prompt)}
-                    className='rounded-full border border-slate-700 px-3 py-1.5 text-sm font-medium text-slate-300 transition-colors hover:border-blue-400 hover:text-blue-300'
+                    className='rounded-full border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-300 transition-colors hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-300'
                   >
                     {prompt}
                   </button>
@@ -204,10 +204,10 @@ const Chatbot = () => {
                       className={`flex max-w-[92%] gap-3 rounded-[8px] p-4 shadow-lg sm:max-w-[78%] ${
                         message.isUser
                           ? "self-end bg-blue-600 text-white"
-                          : "self-start border border-slate-800 bg-slate-800 text-slate-100"
+                          : "self-start border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100"
                       }`}
                     >
-                      <div className='mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/10'>
+                      <div className='mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-black/5 dark:bg-white/10'>
                         {message.isUser ? <FiUser /> : <BsRobot />}
                       </div>
                       <p className='whitespace-pre-wrap break-words text-sm leading-6 sm:text-base'>
@@ -218,14 +218,14 @@ const Chatbot = () => {
                 </AnimatePresence>
 
                 {isTyping && (
-                  <div className='self-start rounded-[8px] border border-slate-800 bg-slate-800 px-4 py-3 text-sm text-slate-300'>
+                  <div className='self-start rounded-[8px] border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-800 px-4 py-3 text-sm text-slate-600 dark:text-slate-300'>
                     Typing...
                   </div>
                 )}
               </div>
 
               <form
-                className='border-t border-slate-800 bg-slate-900 p-4 sm:p-5'
+                className='border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 sm:p-5'
                 onSubmit={(event) => {
                   event.preventDefault();
                   sendMessage();
@@ -236,7 +236,7 @@ const Chatbot = () => {
                     value={input}
                     onChange={(event) => setInput(event.target.value)}
                     placeholder='Ask about projects, AI, skills...'
-                    className='h-12 w-full rounded-[8px] border border-slate-700 bg-white pr-14 pl-4 text-slate-900 outline-none transition-colors focus:border-blue-500'
+                    className='h-12 w-full rounded-[8px] border border-slate-300 dark:border-slate-700 bg-white pr-14 pl-4 text-slate-900 outline-none transition-colors focus:border-blue-500'
                   />
                   <button
                     type='submit'
@@ -251,8 +251,8 @@ const Chatbot = () => {
           )}
         </div>
 
-        <aside className='hidden border border-slate-800 bg-slate-900 p-6 shadow-[0_24px_70px_rgba(0,0,0,0.22)] lg:sticky lg:top-24 lg:block'>
-          <div className='relative mb-6 h-[250px] w-full overflow-hidden border border-slate-800 bg-slate-950/50 rounded-[8px]'>
+        <aside className='hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-[0_24px_70px_rgba(15,23,42,0.06)] dark:shadow-[0_24px_70px_rgba(0,0,0,0.22)] lg:sticky lg:top-24 lg:block'>
+          <div className='relative mb-6 h-[250px] w-full overflow-hidden border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-950/50 rounded-[8px]'>
             <ErrorBoundary fallback={<ModelFallback />}>
               {hasWebGL ? (
                 <Canvas camera={{ position: [0, 0, 5], fov: 50, near: 0.1, far: 1000 }}>
@@ -275,10 +275,10 @@ const Chatbot = () => {
             </ErrorBoundary>
           </div>
 
-          <h2 className='font-poppins text-2xl font-semibold text-slate-50'>
+          <h2 className='font-poppins text-2xl font-semibold text-slate-900 dark:text-slate-50'>
             Interactive 3D AI Assistant
           </h2>
-          <p className='mt-4 text-sm leading-6 text-slate-300'>
+          <p className='mt-4 text-sm leading-6 text-slate-600 dark:text-slate-300'>
             Feel free to ask the assistant anything about my skills, projects, certifications, and experience. You can also interact with the 3D robot model above!
           </p>
 
@@ -286,7 +286,7 @@ const Chatbot = () => {
             {["AI Automation", "Software Engineering", "Open to Full-Time"].map((item) => (
               <div
                 key={item}
-                className='border-l-2 border-blue-500 pl-4 text-sm font-semibold text-slate-200'
+                className='border-l-2 border-blue-500 pl-4 text-sm font-semibold text-slate-700 dark:text-slate-200'
               >
                 {item}
               </div>

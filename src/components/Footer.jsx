@@ -1,67 +1,79 @@
-import { Link, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { socialLinks } from "../constants";
+import { Link } from "react-router-dom";
+import { FaGithub, FaLinkedin, FaMedium, FaWhatsapp } from "react-icons/fa";
+import { MdEmail } from "react-icons/md";
+import Reveal from "./Reveal";
+
+const footerNav = [
+  { to: "/about", label: "About" },
+  { to: "/projects", label: "Projects" },
+  { to: "/studio", label: "Studio" },
+  { to: "/certification", label: "Certifications" },
+  { to: "/connect", label: "Connect" },
+  { to: "/contact", label: "Contact" },
+];
+
+const footerSocials = [
+  { name: "GitHub", icon: FaGithub, url: "https://github.com/AjinkyaNarke" },
+  { name: "LinkedIn", icon: FaLinkedin, url: "https://www.linkedin.com/in/ajinkya-narke" },
+  { name: "Medium", icon: FaMedium, url: "https://medium.com/@ajinkya.narke21" },
+  { name: "WhatsApp", icon: FaWhatsapp, url: "https://api.whatsapp.com/send?phone=917020404952" },
+  { name: "Email", icon: MdEmail, url: "mailto:ajinkya.narke@gmail.com" },
+];
 
 const Footer = () => {
-  const navigate = useNavigate();
-
   return (
-    <footer className='footer relative font-poppins'>
-      <hr className='border-slate-200 dark:border-slate-700' />
+    <footer className='border-t border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950'>
+      <Reveal className='mx-auto w-full max-w-7xl px-4 py-14 sm:px-8 md:px-12 lg:px-16'>
+        <div className='flex flex-col gap-10 md:flex-row md:items-start md:justify-between'>
+          <div className='max-w-sm'>
+            <p className='font-display text-2xl font-bold tracking-tight text-text-light dark:text-text-dark'>
+              Ajinkya<span className='text-gradient'> Narke</span>
+            </p>
+            <p className='mt-3 text-sm leading-6 text-slate-500 dark:text-slate-400'>
+              Software Engineer & AI Software Builder. Building Android apps,
+              web products, and AI automation systems at ANLABS.
+            </p>
+            <div className='mt-5 flex items-center gap-2'>
+              {footerSocials.map((social) => {
+                const Icon = social.icon;
+                return (
+                  <a
+                    key={social.name}
+                    href={social.url}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    aria-label={social.name}
+                    className='flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition-all hover:-translate-y-0.5 hover:border-primary hover:text-primary dark:border-slate-800 dark:text-slate-300 dark:hover:border-primary-dark dark:hover:text-primary-dark'
+                  >
+                    <Icon className='text-[17px]' />
+                  </a>
+                );
+              })}
+            </div>
+          </div>
 
-      <div className='footer-container'>
-        <div className='flex items-center gap-4'>
-          <p className='text-text-light dark:text-text-dark'>
-            © 2025 <strong>Ajinkya Narke</strong>. All rights reserved.
+          <nav className='grid grid-cols-2 gap-x-12 gap-y-3 sm:grid-cols-3'>
+            {footerNav.map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                className='text-sm font-medium text-slate-600 transition-colors hover:text-primary dark:text-slate-300 dark:hover:text-primary-dark'
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+
+        <div className='mt-12 flex flex-col items-center justify-between gap-3 border-t border-slate-200 pt-6 dark:border-slate-800 sm:flex-row'>
+          <p className='text-sm text-slate-500 dark:text-slate-400'>
+            © 2026 <strong className='text-slate-700 dark:text-slate-200'>Ajinkya Narke</strong>. All rights reserved.
           </p>
-
-          <motion.button
-            whileHover={{ scale: 1.08, rotate: 8 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => navigate("/thank-you")}
-            className='rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 p-2 shadow-lg transition-all duration-300 hover:shadow-xl'
-            aria-label='Open thank you animation'
-          >
-            <svg
-              className='h-6 w-6 text-white'
-              fill='none'
-              stroke='currentColor'
-              viewBox='0 0 24 24'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth={2}
-                d='M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z'
-              />
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth={2}
-                d='M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
-              />
-            </svg>
-          </motion.button>
+          <p className='font-mono text-[11px] uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500'>
+            React · Three.js · Motion
+          </p>
         </div>
-
-        <div className='flex items-center justify-center gap-3'>
-          {socialLinks.map((link) => (
-            <Link
-              key={link.name}
-              to={link.link}
-              target={link.link.startsWith("http") ? "_blank" : undefined}
-              rel={link.link.startsWith("http") ? "noopener noreferrer" : undefined}
-              className='transition-opacity hover:opacity-80'
-            >
-              <img
-                src={link.iconUrl}
-                alt={link.name}
-                className='h-6 w-6 object-contain'
-              />
-            </Link>
-          ))}
-        </div>
-      </div>
+      </Reveal>
     </footer>
   );
 };

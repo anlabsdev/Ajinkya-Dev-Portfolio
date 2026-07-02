@@ -2,8 +2,8 @@ import emailjs from "@emailjs/browser";
 import { Canvas } from "@react-three/fiber";
 import { Suspense, useRef, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { useNavigate } from "react-router-dom";
-import { Alert, Loader } from "../components";
+import { Link, useNavigate } from "react-router-dom";
+import { Alert, Loader, TextReveal } from "../components";
 import SplashCursor from "../components/Splash_Cursor/SplashCursor/SplashCursor";
 import useAlert from "../hooks/useAlert";
 import { LowPolyManWorkingAtATableWithALaptop } from "../models";
@@ -76,17 +76,28 @@ const Contact = () => {
   };
 
   return (
-    <section className='relative flex min-h-screen flex-col bg-white p-4 transition-colors duration-300 dark:bg-slate-950 lg:flex-row max-container sm:p-8'>
+    <section className='relative flex min-h-screen flex-col p-4 transition-colors duration-300 lg:flex-row max-container sm:p-8'>
       {alert.show && <Alert {...alert} />}
       {hasWebGL && <SplashCursor />}
 
       <div className='relative z-10 flex min-w-[50%] flex-1 flex-col'>
-        <div className='border border-slate-200 bg-white p-4 shadow-[0_18px_45px_rgba(15,23,42,0.06)] dark:border-slate-800 dark:bg-slate-900 sm:p-8'>
-          <h1 className='head-text font-black text-[30px] sm:text-[40px] md:text-[50px] lg:text-[56px]'>
-            Get in Touch
+        <div className='card-surface p-4 sm:p-8'>
+          <p className='kicker flex items-center gap-3'>
+            <span className='inline-block h-px w-8 bg-primary dark:bg-primary-dark' />
+            Contact
+          </p>
+          <h1 className='head-text mt-4'>
+            <TextReveal text='Get in' />{" "}
+            <TextReveal text='Touch' delay={0.15} gradient className='font-bold' />
           </h1>
           <p className='mt-2 text-base text-slate-600 dark:text-slate-300 sm:mt-4 sm:text-lg'>
             Have a question or want to work together? Feel free to reach out.
+          </p>
+          <p className='mt-2 text-sm text-slate-500 dark:text-slate-400'>
+            Prefer social or messaging apps?{" "}
+            <Link to='/connect' className='font-semibold text-primary hover:underline dark:text-primary-dark'>
+              See all my channels on Connect.
+            </Link>
           </p>
 
           <form
@@ -152,8 +163,8 @@ const Contact = () => {
         </div>
       </div>
 
-      <div className='relative z-10 mt-6 h-[260px] w-full sm:mt-8 sm:h-[360px] md:h-[460px] lg:ml-8 lg:mt-0 lg:h-auto lg:w-1/2'>
-        <div className='h-full overflow-hidden border border-slate-200 bg-slate-50 shadow-[0_18px_45px_rgba(15,23,42,0.06)] dark:border-slate-800 dark:bg-slate-900'>
+      <div className='relative z-10 mt-6 h-[260px] w-full sm:mt-8 sm:h-[360px] md:h-[460px] lg:ml-8 lg:mt-0 lg:h-[520px] lg:w-1/2 lg:self-start'>
+        <div className='card-surface h-full overflow-hidden bg-slate-50 dark:bg-slate-900'>
           <ErrorBoundary fallback={<ModelFallback />}>
             {hasWebGL ? (
               <Canvas camera={{ position: [0, 0, 5], fov: 75, near: 0.1, far: 1000 }}>
